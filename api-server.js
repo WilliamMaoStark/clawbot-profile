@@ -32,217 +32,119 @@ function verifyPassword(req, res, next) {
     next();
 }
 
-// 读取 MEMORY.md
-app.get('/api/memory', (req, res) => {
+// 批量同步接口
+app.post('/api/sync', verifyPassword, (req, res) => {
     try {
-        const content = fs.readFileSync(CONFIG.workspace + '/MEMORY.md', 'utf-8');
-        res.json({ success: true, content });
-    } catch (e) {
-        res.status(500).json({ error: '读取失败' });
-    }
-});
-
-// 更新 MEMORY.md
-app.post('/api/memory', verifyPassword, (req, res) => {
-    try {
-        const { content } = req.body;
-        fs.writeFileSync(CONFIG.workspace + '/MEMORY.md', content);
+        const { changes } = req.body;
+        
+        if (!changes || changes.length === 0) {
+            return res.json({ success: true, message: '没有需要同步的更改' });
+        }
+        
+        console.log('收到 ' + changes.length + ' 个更改请求');
+        
+        // 按类型分组处理
+        const memoryChanges = changes.filter(c => c.type === 'memory');
+        const skillChanges = changes.filter(c => c.type === 'skill');
+        
+        let hasError = false;
+        
+        // 处理记忆项修改
+        if (memoryChanges.length > 0) {
+            const memoryPath = CONFIG.workspace + '/MEMORY.md';
+            let memoryContent = fs.readFileSync(memoryPath, 'utf-8');
+            const memoryLines = memoryContent.split('\n');
+            
+            // 按行号降序排序，避免删除后行号变化
+            memoryChanges.sort((a, b) => b.lineIndex - a.lineIndex);
+            
+            for (const change of memoryChanges) {
+                if (change.action === 'delete') {
+                    // 删除行
+                    if (change.lineIndex >= 0 && change.lineIndex < memoryLines.length) {
+                        memoryLines.splice(change.lineIndex, 1);
+                        console.log('删除记忆行 ' + change.lineIndex);
+                    }
+                } else if (change.action === 'edit') {
+                    // 编辑行
+                    if (change.lineIndex >= 0 && change.lineIndex < memoryLines.length) {
+                        // 保留原有的前缀标记
+                        const oldLine = memoryLines[change.lineIndex];
+                        const prefixMatch = oldLine.match(/^(\s*-\s*\[P\d\](?:\[.*?\])?\s*)/);
+                        const prefix = prefixMatch ? prefixMatch[1] : '- ';
+                        memoryLines[change.lineIndex] = prefix + change.newContent;
+                        console.log('编辑记忆行 ' + change.lineIndex);
+                    }
+                }
+            }
+            
+            fs.writeFileSync(memoryPath, memoryLines.join('\n'));
+        }
+        
+        // 处理技能修改
+        if (skillChanges.length > 0) {
+            const skillsPath = CONFIG.profileDir + '/generate-profile.js';
+            let skillsContent = fs.readFileSync(skillsPath, 'utf-8');
+            
+            for (const change of skillChanges) {
+                if (change.action === 'edit' && change.name && change.newDesc) {
+                    // 使用正则替换技能描述
+                    const regex = new RegExp(`(name: '${change.name}',[^}]+?desc: )'([^']+)'`, 's');
+                    skillsContent = skillsContent.replace(regex, `$1'${change.newDesc}'`);
+                    console.log('编辑技能: ' + change.name);
+                } else if (change.action === 'delete' && change.name) {
+                    // 删除技能对象
+                    const regex = new RegExp(`\\s*\\{[^}]*name: '${change.name}'[^}]*\\},?`, 's');
+                    skillsContent = skillsContent.replace(regex, '');
+                    console.log('删除技能: ' + change.name);
+                }
+            }
+            
+            fs.writeFileSync(skillsPath, skillsContent);
+        }
         
         // 重新生成 HTML
         exec('node generate-profile.js', { cwd: CONFIG.profileDir }, (error) => {
             if (error) {
                 console.error('生成失败:', error);
-                return res.status(500).json({ error: '生成失败' });
+                return res.status(500).json({ error: '生成HTML失败' });
             }
             
-            // 提交到 GitHub
-            exec('git add -A && git commit -m "Update from web editor" && git push origin main', 
-                { cwd: CONFIG.profileDir }, 
-                (err) => {
-                    if (err) console.error('推送失败:', err);
-                }
-            );
+            console.log('HTML生成成功');
             
-            res.json({ success: true, message: '已保存并重新生成' });
-        });
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
-});
-
-// 编辑记忆项
-app.put('/api/memory/item', verifyPassword, (req, res) => {
-    try {
-        const { level, index, newContent } = req.body;
-        const filePath = CONFIG.workspace + '/MEMORY.md';
-        let content = fs.readFileSync(filePath, 'utf-8');
-        
-        // 找到对应项并替换
-        const lines = content.split('\n');
-        let foundLevel = false;
-        let itemCount = 0;
-        
-        for (let i = 0; i < lines.length; i++) {
-            const line = lines[i];
+            // 一次性提交所有更改到GitHub
+            const commitMessage = `Batch sync: ${changes.length} changes\n\n${changes.map(c => 
+                c.type === 'memory' 
+                    ? `- ${c.action} memory: ${c.originalContent?.substring(0, 30) || 'item'}...`
+                    : `- ${c.action} skill: ${c.name}`
+            ).join('\n')}`;
             
-            if (line.startsWith('## ')) {
-                foundLevel = false;
-            }
-            
-            if (line.includes(`[${level}]`)) {
-                foundLevel = true;
-            }
-            
-            if (foundLevel && line.match(/-\s*\[P\d\]/)) {
-                if (itemCount === index) {
-                    // 保留原有的前缀和标记
-                    const prefix = line.match(/(-\s*\[P\d\](?:\[.*?\])?\s*)/)?.[1] || '';
-                    lines[i] = prefix + newContent;
-                    break;
-                }
-                itemCount++;
-            }
-        }
-        
-        fs.writeFileSync(filePath, lines.join('\n'));
-        
-        // 重新生成和部署
-        exec('node generate-profile.js', { cwd: CONFIG.profileDir }, (error) => {
-            if (error) return res.status(500).json({ error: '生成失败' });
-            
-            exec('git add -A && git commit -m "Update memory from web" && git push origin main', 
+            exec(`git add -A && git commit -m "${commitMessage.replace(/"/g, '\\"')}" && git push origin main`, 
                 { cwd: CONFIG.profileDir },
-                (err) => {
-                    if (err) console.error('推送失败:', err);
-                }
-            );
-            
-            res.json({ success: true });
-        });
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
-});
-
-// 删除记忆项
-app.delete('/api/memory/item', verifyPassword, (req, res) => {
-    try {
-        const { level, index } = req.body;
-        const filePath = CONFIG.workspace + '/MEMORY.md';
-        let content = fs.readFileSync(filePath, 'utf-8');
-        
-        const lines = content.split('\n');
-        let foundLevel = false;
-        let itemCount = 0;
-        let deleteIndex = -1;
-        
-        for (let i = 0; i < lines.length; i++) {
-            const line = lines[i];
-            
-            if (line.startsWith('## ')) {
-                foundLevel = false;
-            }
-            
-            if (line.includes(`[${level}]`)) {
-                foundLevel = true;
-            }
-            
-            if (foundLevel && line.match(/-\s*\[P\d\]/)) {
-                if (itemCount === index) {
-                    deleteIndex = i;
-                    break;
-                }
-                itemCount++;
-            }
-        }
-        
-        if (deleteIndex >= 0) {
-            lines.splice(deleteIndex, 1);
-            fs.writeFileSync(filePath, lines.join('\n'));
-            
-            // 重新生成和部署
-            exec('node generate-profile.js', { cwd: CONFIG.profileDir }, (error) => {
-                if (error) return res.status(500).json({ error: '生成失败' });
-                
-                exec('git add -A && git commit -m "Delete memory from web" && git push origin main', 
-                    { cwd: CONFIG.profileDir },
-                    (err) => {
-                        if (err) console.error('推送失败:', err);
+                (err, stdout, stderr) => {
+                    if (err) {
+                        console.error('Git推送失败:', err);
+                        // 即使推送失败，本地修改已保存
+                        return res.json({ 
+                            success: true, 
+                            warning: '本地已保存，但推送到GitHub失败',
+                            changes: changes.length
+                        });
                     }
-                );
-                
-                res.json({ success: true });
-            });
-        } else {
-            res.status(404).json({ error: '未找到' });
-        }
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
-});
-
-// 编辑技能（修改描述）
-app.put('/api/skill', verifyPassword, (req, res) => {
-    try {
-        const { name, newDesc } = req.body;
-        
-        // 修改 generate-profile.js 中的技能数据
-        const filePath = CONFIG.profileDir + '/generate-profile.js';
-        let content = fs.readFileSync(filePath, 'utf-8');
-        
-        // 使用正则替换技能描述
-        const regex = new RegExp(`(name: '${name}',[^}]+?desc: )'([^']+)'`, 's');
-        content = content.replace(regex, `$1'${newDesc}'`);
-        
-        fs.writeFileSync(filePath, content);
-        
-        // 重新生成和部署
-        exec('node generate-profile.js', { cwd: CONFIG.profileDir }, (error) => {
-            if (error) return res.status(500).json({ error: '生成失败' });
-            
-            exec('git add -A && git commit -m "Update skill from web" && git push origin main', 
-                { cwd: CONFIG.profileDir },
-                (err) => {
-                    if (err) console.error('推送失败:', err);
+                    
+                    console.log('GitHub推送成功');
+                    res.json({ 
+                        success: true, 
+                        message: `成功同步 ${changes.length} 个更改`,
+                        changes: changes.length,
+                        github: true
+                    });
                 }
             );
-            
-            res.json({ success: true });
         });
+        
     } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
-});
-
-// 删除技能
-app.delete('/api/skill', verifyPassword, (req, res) => {
-    try {
-        const { name } = req.body;
-        
-        // 从 generate-profile.js 中删除技能
-        const filePath = CONFIG.profileDir + '/generate-profile.js';
-        let content = fs.readFileSync(filePath, 'utf-8');
-        
-        // 使用正则删除技能对象
-        const regex = new RegExp(`\\s*\\{[^}]*name: '${name}'[^}]*\\},?`, 's');
-        content = content.replace(regex, '');
-        
-        fs.writeFileSync(filePath, content);
-        
-        // 重新生成和部署
-        exec('node generate-profile.js', { cwd: CONFIG.profileDir }, (error) => {
-            if (error) return res.status(500).json({ error: '生成失败' });
-            
-            exec('git add -A && git commit -m "Delete skill from web" && git push origin main', 
-                { cwd: CONFIG.profileDir },
-                (err) => {
-                    if (err) console.error('推送失败:', err);
-                }
-            );
-            
-            res.json({ success: true });
-        });
-    } catch (e) {
+        console.error('同步失败:', e);
         res.status(500).json({ error: e.message });
     }
 });
@@ -250,5 +152,5 @@ app.delete('/api/skill', verifyPassword, (req, res) => {
 // 启动服务器
 app.listen(PORT, () => {
     console.log(`API Server running on http://localhost:${PORT}`);
-    console.log('Memory edit/delete API is ready');
+    console.log('Batch sync API is ready');
 });

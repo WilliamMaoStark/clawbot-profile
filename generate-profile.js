@@ -92,7 +92,7 @@ function readFile(filePath) {
     }
 }
 
-// 解析记忆，增加分类
+// 解析记忆，增加分类和行索引
 function parseMemory(content) {
     const memories = {
         P0: [],
@@ -124,21 +124,24 @@ function parseMemory(content) {
                 content: cleanMarkdown(p0Match[1].trim()),
                 category: currentCategory,
                 date: '永久',
-                tags: extractTags(p0Match[1])
+                tags: extractTags(p0Match[1]),
+                lineIndex: i
             });
         } else if (p1Match) {
             memories.P1.push({
                 content: cleanMarkdown(p1Match[2].trim()),
                 category: currentCategory,
                 date: p1Match[1],
-                tags: extractTags(p1Match[2])
+                tags: extractTags(p1Match[2]),
+                lineIndex: i
             });
         } else if (p2Match) {
             memories.P2.push({
                 content: cleanMarkdown(p2Match[2].trim()),
                 category: currentCategory,
                 date: p2Match[1],
-                tags: extractTags(p2Match[2])
+                tags: extractTags(p2Match[2]),
+                lineIndex: i
             });
         }
     }
@@ -199,16 +202,16 @@ function generateMemoryByCategory(memories, level) {
                 <span class="category-toggle">${ICONS.chevronDown}</span>
             </div>
             <div class="category-content">
-                ${items.map((item, index) => `
-                    <div class="memory-item-compact" data-id="${level}-${index}">
+                ${items.map((item, idx) => `
+                    <div class="memory-item-compact" data-id="${level}-${idx}" data-line-index="${item.lineIndex || idx}">
                         <div class="memory-badges">
                             <span class="priority-badge ${colorClass}">${level}</span>
                             ${item.tags.map(tag => `<span class="tag-small">${tag}</span>`).join('')}
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('${level}', ${index}, '${item.content.replace(/'/g, "\\'")}')" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('${level}', ${idx}, '${item.content.replace(/'/g, "\\'")}', ${item.lineIndex || idx})" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('${level}', ${index}, '${item.content.replace(/'/g, "\\'")}')" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('${level}', ${idx}, '${item.content.replace(/'/g, "\\'")}', ${item.lineIndex || idx})" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
@@ -869,6 +872,54 @@ function generateCSS() {
             opacity: 1;
         }
 
+        /* Sync button */
+        .sync-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: rgba(90, 154, 142, 0.2);
+            border: 1px solid rgba(90, 154, 142, 0.4);
+            color: var(--accent-cyan);
+            padding: 0.3rem 0.6rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .sync-btn:hover:not(:disabled) {
+            background: rgba(90, 154, 142, 0.3);
+        }
+
+        .sync-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .sync-btn.syncing {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Pending indicator on items */
+        .memory-item-compact.pending,
+        .skill-card.pending {
+            border-left: 2px solid var(--accent-cyan);
+        }
+
+        .pending-badge {
+            font-size: 0.6rem;
+            color: var(--accent-cyan);
+            background: rgba(90, 154, 142, 0.15);
+            padding: 1px 5px;
+            border-radius: 9999px;
+            margin-left: 0.5rem;
+        }
+
         /* Item actions (edit/delete buttons) */
         .item-actions {
             display: flex;
@@ -1200,7 +1251,17 @@ function generateHTML(data) {
 
     <div class="update-banner">
         <span>Last updated: ${updatedAt}</span>
-        <span>Auto-sync: Daily 04:00 CST</span>
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span id="pendingChanges" style="color: var(--text-tertiary); font-size: 0.7rem; display: none;"></span>
+            <button id="syncBtn" class="sync-btn" onclick="syncChanges()" disabled>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <polyline points="1 20 1 14 7 14"></polyline>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </svg>
+                同步
+            </button>
+        </div>
     </div>
 
     <button class="mobile-menu-btn" onclick="toggleSidebar()">
@@ -1291,10 +1352,145 @@ function generateHTML(data) {
     </div>
 
     <script>
-        // Password
+        // Local change cache for batch sync
+        let pendingChanges = [];
+        let pendingEditCallback = null;
         const DELETE_PASSWORD = '002324';
-        let pendingDelete = null;
-        let pendingEdit = null;
+        const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3000' : '';
+
+        // Update sync button state
+        function updateSyncButton() {
+            const btn = document.getElementById('syncBtn');
+            const badge = document.getElementById('pendingChanges');
+            
+            if (pendingChanges.length > 0) {
+                btn.disabled = false;
+                badge.style.display = 'inline';
+                badge.textContent = pendingChanges.length + ' 个更改待同步';
+            } else {
+                btn.disabled = true;
+                badge.style.display = 'none';
+            }
+        }
+
+        // Add change to local cache
+        function addChange(change) {
+            // Check if same item already has a pending change
+            const existingIndex = pendingChanges.findIndex(c => 
+                c.type === change.type && 
+                ((c.type === 'memory' && c.lineIndex === change.lineIndex) ||
+                 (c.type === 'skill' && c.name === change.name))
+            );
+            
+            if (existingIndex >= 0) {
+                // Merge changes - if new action is delete, override; else update content
+                if (change.action === 'delete') {
+                    pendingChanges[existingIndex] = change;
+                } else {
+                    pendingChanges[existingIndex].newContent = change.newContent || pendingChanges[existingIndex].newContent;
+                    pendingChanges[existingIndex].newDesc = change.newDesc || pendingChanges[existingIndex].newDesc;
+                }
+            } else {
+                pendingChanges.push(change);
+            }
+            
+            updateSyncButton();
+            
+            // Mark item as pending
+            let item;
+            if (change.type === 'memory') {
+                item = document.querySelector('[data-id="' + change.level + '-' + change.index + '"]');
+            } else {
+                item = document.querySelector('[data-skill="' + change.name + '"]');
+            }
+            
+            if (item && !item.classList.contains('pending')) {
+                item.classList.add('pending');
+                const badgesDiv = item.querySelector('.memory-badges, .skill-header');
+                if (badgesDiv) {
+                    const pendingBadge = document.createElement('span');
+                    pendingBadge.className = 'pending-badge';
+                    pendingBadge.textContent = '待同步';
+                    badgesDiv.appendChild(pendingBadge);
+                }
+            }
+            
+            showToast('已添加到同步队列');
+        }
+
+        // Sync all pending changes
+        function syncChanges() {
+            if (pendingChanges.length === 0) return;
+            
+            // Show password modal for sync
+            document.getElementById('modalTitle').textContent = '同步更改';
+            document.getElementById('modalDesc').textContent = '即将同步 ' + pendingChanges.length + ' 个更改到系统，请输入密码：';
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('modalError').classList.remove('show');
+            document.getElementById('passwordModal').classList.add('show');
+            document.getElementById('passwordInput').focus();
+            
+            // Set verify callback
+            window.verifyCallback = function() {
+                const input = document.getElementById('passwordInput').value;
+                if (input === DELETE_PASSWORD) {
+                    closeModal();
+                    performSync();
+                } else {
+                    document.getElementById('modalError').classList.add('show');
+                    document.getElementById('passwordInput').value = '';
+                }
+            };
+        }
+
+        function performSync() {
+            const btn = document.getElementById('syncBtn');
+            btn.classList.add('syncing');
+            btn.disabled = true;
+            
+            fetch(API_BASE + '/api/sync', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    password: DELETE_PASSWORD, 
+                    changes: pendingChanges 
+                })
+            })
+            .then(r => r.json())
+            .then(data => {
+                btn.classList.remove('syncing');
+                
+                if (data.success) {
+                    // Clear cache
+                    pendingChanges = [];
+                    updateSyncButton();
+                    
+                    // Remove pending markers
+                    document.querySelectorAll('.pending').forEach(el => {
+                        el.classList.remove('pending');
+                    });
+                    document.querySelectorAll('.pending-badge').forEach(el => el.remove());
+                    
+                    showToast(data.message || '同步成功！页面将在2分钟后更新');
+                } else {
+                    showToast('同步失败: ' + data.error);
+                    btn.disabled = false;
+                }
+            })
+            .catch(e => {
+                btn.classList.remove('syncing');
+                btn.disabled = false;
+                showToast('同步失败，请检查API服务器是否运行');
+                console.error(e);
+            });
+        }
+
+        // Override verifyPassword to use callback
+        function verifyPassword() {
+            if (window.verifyCallback) {
+                window.verifyCallback();
+            }
+        }
 
         // Modal functions
         function showPasswordModal(title, desc, callback) {
@@ -1304,23 +1500,12 @@ function generateHTML(data) {
             document.getElementById('modalError').classList.remove('show');
             document.getElementById('passwordModal').classList.add('show');
             document.getElementById('passwordInput').focus();
-            pendingDelete = callback;
+            window.verifyCallback = callback;
         }
 
         function closeModal() {
             document.getElementById('passwordModal').classList.remove('show');
-            pendingDelete = null;
-        }
-
-        function verifyPassword() {
-            const input = document.getElementById('passwordInput').value;
-            if (input === DELETE_PASSWORD) {
-                closeModal();
-                if (pendingDelete) pendingDelete();
-            } else {
-                document.getElementById('modalError').classList.add('show');
-                document.getElementById('passwordInput').value = '';
-            }
+            window.verifyCallback = null;
         }
 
         // Edit modal functions
@@ -1328,132 +1513,76 @@ function generateHTML(data) {
             document.getElementById('editModalTitle').textContent = title;
             document.getElementById('editTextarea').value = content;
             document.getElementById('editModal').classList.add('show');
-            pendingEdit = callback;
+            pendingEditCallback = callback;
         }
 
         function closeEditModal() {
             document.getElementById('editModal').classList.remove('show');
-            pendingEdit = null;
+            pendingEditCallback = null;
         }
 
         function saveEdit() {
             const content = document.getElementById('editTextarea').value;
             closeEditModal();
-            if (pendingEdit) pendingEdit(content);
+            if (pendingEditCallback) pendingEditCallback(content);
         }
 
-        // API base URL
-        const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3000' : '';
-
-        // Delete functions
-        function deleteItem(level, index, content) {
-            showPasswordModal(
-                '删除记忆项',
-                '删除后将无法恢复，请输入密码确认：',
-                function() {
-                    const item = document.querySelector('[data-id="' + level + '-' + index + '"]');
-                    if (item) {
-                        item.style.opacity = '0.5';
-                        
-                        // 调用API删除
-                        fetch(API_BASE + '/api/memory/item', {
-                            method: 'DELETE',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ password: DELETE_PASSWORD, level: level, index: index })
-                        })
-                        .then(r => r.json())
-                        .then(data => {
-                            if (data.success) {
-                                item.style.opacity = '0';
-                                item.style.transform = 'translateX(20px)';
-                                setTimeout(function() { item.remove(); }, 300);
-                                showToast('已删除（页面2分钟后更新）');
-                            } else {
-                                showToast('删除失败: ' + data.error);
-                                item.style.opacity = '1';
-                            }
-                        })
-                        .catch(e => {
-                            showToast('API调用失败，请确保本地服务器已启动');
-                            item.style.opacity = '1';
-                            console.error(e);
-                        });
-                    }
-                }
-            );
+        // Delete functions - now add to cache instead of immediate API call
+        function deleteItem(level, index, content, lineIndex) {
+            // Add to pending changes
+            addChange({
+                type: 'memory',
+                action: 'delete',
+                level: level,
+                index: index,
+                lineIndex: lineIndex,
+                originalContent: content
+            });
+            
+            // Visual feedback
+            const item = document.querySelector('[data-id="' + level + '-' + index + '"]');
+            if (item) {
+                item.style.opacity = '0.5';
+            }
         }
 
         function deleteSkill(name) {
-            showPasswordModal(
-                '删除技能',
-                '确定要删除技能 "' + name + '" 吗？请输入密码确认：',
-                function() {
-                    const skill = document.querySelector('[data-skill="' + name + '"]');
-                    if (skill) {
-                        skill.style.opacity = '0.5';
-                        
-                        // 调用API删除
-                        fetch(API_BASE + '/api/skill', {
-                            method: 'DELETE',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ password: DELETE_PASSWORD, name: name })
-                        })
-                        .then(r => r.json())
-                        .then(data => {
-                            if (data.success) {
-                                skill.style.opacity = '0';
-                                skill.style.transform = 'scale(0.95)';
-                                setTimeout(function() { skill.remove(); }, 300);
-                                showToast('已删除（页面2分钟后更新）');
-                            } else {
-                                showToast('删除失败: ' + data.error);
-                                skill.style.opacity = '1';
-                            }
-                        })
-                        .catch(e => {
-                            showToast('API调用失败，请确保本地服务器已启动');
-                            skill.style.opacity = '1';
-                            console.error(e);
-                        });
-                    }
-                }
-            );
+            // Add to pending changes
+            addChange({
+                type: 'skill',
+                action: 'delete',
+                name: name
+            });
+            
+            // Visual feedback
+            const skill = document.querySelector('[data-skill="' + name + '"]');
+            if (skill) {
+                skill.style.opacity = '0.5';
+            }
         }
 
-        // Edit functions
-        function editMemory(level, index, content) {
+        // Edit functions - now add to cache instead of immediate API call
+        function editMemory(level, index, content, lineIndex) {
             showEditModal(
                 '编辑记忆项',
                 content,
                 function(newContent) {
+                    // Update UI immediately
                     const item = document.querySelector('[data-id="' + level + '-' + index + '"]').querySelector('.memory-text');
                     if (item) {
-                        item.style.opacity = '0.5';
-                        
-                        // 调用API编辑
-                        fetch(API_BASE + '/api/memory/item', {
-                            method: 'PUT',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ password: DELETE_PASSWORD, level: level, index: index, newContent: newContent })
-                        })
-                        .then(r => r.json())
-                        .then(data => {
-                            if (data.success) {
-                                item.textContent = newContent;
-                                item.style.opacity = '1';
-                                showToast('已保存（页面2分钟后更新）');
-                            } else {
-                                showToast('保存失败: ' + data.error);
-                                item.style.opacity = '1';
-                            }
-                        })
-                        .catch(e => {
-                            showToast('API调用失败，请确保本地服务器已启动');
-                            item.style.opacity = '1';
-                            item.textContent = newContent; // 本地仍然更新
-                            console.error(e);
-                        });
+                        item.textContent = newContent;
                     }
+                    
+                    // Add to pending changes
+                    addChange({
+                        type: 'memory',
+                        action: 'edit',
+                        level: level,
+                        index: index,
+                        lineIndex: lineIndex,
+                        newContent: newContent,
+                        originalContent: content
+                    });
                 }
             );
         }
@@ -1463,32 +1592,137 @@ function generateHTML(data) {
                 '编辑技能: ' + name,
                 desc,
                 function(newDesc) {
+                    // Update UI immediately
                     const skill = document.querySelector('[data-skill="' + name + '"]').querySelector('.skill-desc');
                     if (skill) {
-                        skill.style.opacity = '0.5';
-                        
-                        // 调用API编辑
-                        fetch(API_BASE + '/api/skill', {
-                            method: 'PUT',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ password: DELETE_PASSWORD, name: name, newDesc: newDesc })
-                        })
-                        .then(r => r.json())
-                        .then(data => {
-                            if (data.success) {
-                                skill.textContent = newDesc;
-                                skill.style.opacity = '1';
-                                showToast('已保存（页面2分钟后更新）');
-                            } else {
-                                showToast('保存失败: ' + data.error);
-                                skill.style.opacity = '1';
-                            }
-                        })
-                        .catch(e => {
-                            showToast('API调用失败，请确保本地服务器已启动');
-                            skill.style.opacity = '1';
-                            skill.textContent = newDesc; // 本地仍然更新
-                            console.error(e);
+                        skill.textContent = newDesc;
+                    }
+                    
+                    // Add to pending changes
+                    addChange({
+                        type: 'skill',
+                        action: 'edit',
+                        name: name,
+                        newDesc: newDesc
+                    });
+                }
+            );
+        }
+
+        // Close modals on overlay click
+        document.getElementById('passwordModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        document.getElementById('editModal').addEventListener('click', function(e) {
+            if (e.target === this) closeEditModal();
+        });
+
+        // Enter key to submit password
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') verifyPassword();
+        });
+
+        // Page navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => {
+                if (n.getAttribute('onclick')?.includes(pageId)) n.classList.add('active');
+            });
+            document.getElementById('sidebar').classList.remove('open');
+            window.scrollTo(0, 0);
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        document.addEventListener('click', function(e) {
+            const sidebar = document.getElementById('sidebar');
+            const btn = document.querySelector('.mobile-menu-btn');
+            if (!sidebar.contains(e.target) && !btn.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
+        });
+
+        // Category toggle
+        function toggleCategory(header) {
+            header.classList.toggle('collapsed');
+        }
+
+        // Skill detail toggle
+        function toggleSkillDetail(card) {
+            card.classList.toggle('expanded');
+        }
+
+        // Copy to clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Copied to clipboard');
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        // Search functionality
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const stats = document.getElementById('searchStats');
+            
+            if (!query) {
+                document.querySelectorAll('.hidden').forEach(el => el.classList.remove('hidden'));
+                document.querySelectorAll('.highlight').forEach(el => {
+                    el.outerHTML = el.innerHTML;
+                });
+                stats.textContent = '';
+                return;
+            }
+
+            let matchCount = 0;
+            
+            // Search in memory items
+            document.querySelectorAll('.memory-item-compact').forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    item.classList.remove('hidden');
+                    matchCount++;
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+
+            // Search in skill cards
+            document.querySelectorAll('.skill-card').forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    card.classList.remove('hidden');
+                    matchCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            // Search in API items
+            document.querySelectorAll('.api-item').forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    item.classList.remove('hidden');
+                    matchCount++;
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+
+            stats.textContent = matchCount + ' results';
+        }
+    </script>
                         });
                     }
                 }
