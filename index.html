@@ -1,0 +1,2582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClawBot | Personal Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0d12;
+            --bg-secondary: #0f1419;
+            --bg-tertiary: #151b22;
+            --glass-bg: rgba(21, 27, 34, 0.6);
+            --glass-border: rgba(130, 150, 170, 0.06);
+            --accent-cyan: #5a9a8e;
+            --accent-blue: #6a8a9a;
+            --accent-slate: #8a9aa8;
+            --p0-color: #b07070;
+            --p1-color: #b0a070;
+            --p2-color: #70a080;
+            --text-primary: #d8e0e8;
+            --text-secondary: #8a9aa8;
+            --text-tertiary: #5a6a78;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --space-xs: 0.25rem; --space-sm: 0.5rem; --space-md: 0.75rem;
+            --space-lg: 1rem; --space-xl: 1.5rem; --space-2xl: 2rem;
+            --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        /* Background effects */
+        .bg-glow {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+            background: 
+                radial-gradient(ellipse 50% 30% at 20% 20%, rgba(90, 154, 142, 0.04) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 25% at 80% 70%, rgba(106, 138, 154, 0.03) 0%, transparent 50%);
+        }
+
+        .bg-grid {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+            background-image: 
+                linear-gradient(rgba(130, 150, 170, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(130, 150, 170, 0.015) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .update-banner {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: rgba(15, 20, 25, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 0.4rem 1rem;
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            z-index: 200;
+            font-family: var(--font-mono);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .app-container {
+            display: flex; min-height: 100vh;
+            position: relative; z-index: 1;
+            padding-top: 32px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            border-right: 1px solid var(--glass-border);
+            position: fixed; height: 100vh;
+            display: flex; flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .logo {
+            display: flex; align-items: center; gap: 0.6rem;
+        }
+
+        .logo-icon {
+            width: 32px; height: 32px;
+            background: linear-gradient(135deg, rgba(90, 154, 142, 0.25), rgba(106, 138, 154, 0.15));
+            border-radius: var(--radius-md);
+            display: flex; align-items: center; justify-content: center;
+            border: 1px solid rgba(90, 154, 142, 0.15);
+        }
+
+        .logo-icon svg { width: 18px; height: 18px; color: var(--accent-cyan); }
+        .logo-text { font-size: 1.05rem; font-weight: 600; color: var(--text-primary); letter-spacing: -0.01em; }
+
+        .nav-menu { flex: 1; padding: 0.75rem; overflow-y: auto; }
+        .nav-section { margin-bottom: 1.25rem; }
+        .nav-section-title {
+            font-size: 0.6rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--text-tertiary);
+            margin-bottom: 0.4rem; padding-left: 0.6rem;
+        }
+
+        .nav-item {
+            display: flex; align-items: center; gap: 0.6rem;
+            padding: 0.5rem 0.6rem;
+            border-radius: var(--radius-md);
+            cursor: pointer; transition: all 0.15s ease;
+            color: var(--text-secondary);
+            margin-bottom: 1px;
+            font-size: 0.85rem;
+            position: relative;
+        }
+
+        .nav-item:hover { background: rgba(130, 150, 170, 0.06); color: var(--text-primary); }
+        .nav-item.active { background: rgba(90, 154, 142, 0.1); color: var(--accent-cyan); }
+        .nav-icon { width: 16px; height: 16px; opacity: 0.7; flex-shrink: 0; }
+        .nav-icon svg { width: 100%; height: 100%; }
+        .nav-item.active .nav-icon { opacity: 1; color: var(--accent-cyan); }
+        .nav-badge {
+            margin-left: auto;
+            background: rgba(130, 150, 170, 0.12);
+            padding: 1px 6px;
+            border-radius: 9999px;
+            font-size: 0.6rem;
+            color: var(--text-tertiary);
+        }
+
+        .sidebar-footer {
+            padding: 0.75rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .status-indicator {
+            display: flex; align-items: center; gap: 0.4rem;
+            font-size: 0.75rem; color: var(--text-tertiary);
+        }
+
+        .status-dot {
+            width: 6px; height: 6px;
+            background: var(--p2-color);
+            border-radius: 9999px;
+            box-shadow: 0 0 6px var(--p2-color);
+        }
+
+        /* Main content */
+        .main-content {
+            flex: 1; margin-left: 240px;
+            padding: 1.5rem;
+            max-width: calc(100% - 240px);
+        }
+
+        /* Search bar */
+        .search-container {
+            position: sticky;
+            top: 40px;
+            z-index: 50;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-box {
+            width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .search-box svg {
+            width: 18px; height: 18px;
+            color: var(--text-tertiary);
+            flex-shrink: 0;
+        }
+
+        .search-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .search-stats {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            font-family: var(--font-mono);
+        }
+
+        /* Page */
+        .page { display: none; animation: fadeIn 0.25s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-header { margin-bottom: 1.5rem; }
+        .page-title { font-size: 1.75rem; font-weight: 600; margin-bottom: 0.2rem; color: var(--text-primary); letter-spacing: -0.01em; }
+        .page-subtitle { color: var(--text-secondary); font-size: 0.9rem; }
+
+        /* Cards */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        /* Category groups */
+        .category-group { margin-bottom: 0.75rem; }
+        .category-header {
+            display: flex; align-items: center; gap: 0.5rem;
+            padding: 0.6rem 0.75rem;
+            background: rgba(130, 150, 170, 0.04);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.15s;
+            border: 1px solid transparent;
+        }
+
+        .category-header:hover {
+            background: rgba(130, 150, 170, 0.08);
+            border-color: var(--glass-border);
+        }
+
+        .category-header.collapsed .category-toggle {
+            transform: rotate(-90deg);
+        }
+
+        .category-icon { width: 16px; height: 16px; color: var(--text-tertiary); }
+        .category-icon svg { width: 100%; height: 100%; }
+        .category-name { flex: 1; font-weight: 500; font-size: 0.85rem; color: var(--text-primary); }
+        .category-count { 
+            font-size: 0.65rem; 
+            color: var(--text-tertiary);
+            background: rgba(130, 150, 170, 0.1);
+            padding: 1px 6px;
+            border-radius: 9999px;
+        }
+        .category-toggle { 
+            width: 14px; height: 14px; 
+            color: var(--text-tertiary);
+            transition: transform 0.2s;
+        }
+        .category-toggle svg { width: 100%; height: 100%; }
+
+        .category-content {
+            padding: 0.5rem 0 0.5rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .category-header.collapsed + .category-content {
+            display: none;
+        }
+
+        /* Memory items */
+        .memory-item-compact {
+            background: rgba(130, 150, 170, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 0.6rem 0.75rem;
+        }
+
+        .memory-badges {
+            display: flex;
+            gap: 0.4rem;
+            margin-bottom: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .priority-badge {
+            display: inline-flex; align-items: center;
+            padding: 1px 6px;
+            border-radius: 9999px;
+            font-size: 0.6rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.05em;
+        }
+
+        .badge-p0 { background: rgba(176, 112, 112, 0.12); color: var(--p0-color); }
+        .badge-p1 { background: rgba(176, 160, 112, 0.12); color: var(--p1-color); }
+        .badge-p2 { background: rgba(112, 160, 128, 0.12); color: var(--p2-color); }
+
+        .tag-small {
+            font-size: 0.6rem;
+            color: var(--text-tertiary);
+            background: rgba(130, 150, 170, 0.1);
+            padding: 1px 5px;
+            border-radius: 9999px;
+        }
+
+        .memory-text {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .memory-meta {
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            margin-top: 0.4rem;
+            font-family: var(--font-mono);
+        }
+
+        /* Skills */
+        .skill-group { margin-bottom: 1.5rem; }
+        .skill-group-header {
+            display: flex;
+            align-items: baseline;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .skill-group-title { font-size: 0.95rem; font-weight: 600; }
+        .skill-group-desc { font-size: 0.75rem; color: var(--text-tertiary); }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .skill-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 0.875rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .skill-card:hover {
+            border-color: rgba(90, 154, 142, 0.2);
+        }
+
+        .skill-card.expanded {
+            border-color: rgba(90, 154, 142, 0.25);
+        }
+
+        .skill-header {
+            display: flex; align-items: center; gap: 0.6rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .skill-icon {
+            width: 28px; height: 28px;
+            background: rgba(90, 154, 142, 0.1);
+            border-radius: var(--radius-sm);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .skill-icon svg { width: 15px; height: 15px; color: var(--accent-cyan); }
+        .skill-info { flex: 1; }
+        .skill-name { font-weight: 500; color: var(--text-primary); font-size: 0.9rem; }
+        .skill-category { font-size: 0.65rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.03em; }
+        .skill-expand { width: 14px; height: 14px; color: var(--text-tertiary); transition: transform 0.2s; }
+        .skill-expand svg { width: 100%; height: 100%; }
+        .skill-card.expanded .skill-expand { transform: rotate(180deg); }
+
+        .skill-desc { color: var(--text-secondary); font-size: 0.8rem; line-height: 1.4; margin-bottom: 0.5rem; }
+
+        .skill-tags {
+            display: flex; gap: 0.35rem; flex-wrap: wrap;
+        }
+
+        .skill-tag {
+            font-size: 0.65rem;
+            padding: 1px 6px;
+            border-radius: 9999px;
+        }
+
+        .skill-tag.tag-normal { color: var(--text-tertiary); background: rgba(130, 150, 170, 0.1); }
+        .skill-tag.tag-active { color: var(--p2-color); background: rgba(112, 160, 128, 0.12); }
+        .skill-tag.tag-pending { color: var(--p1-color); background: rgba(176, 160, 112, 0.12); }
+
+        .skill-detail {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease;
+        }
+
+        .skill-card.expanded .skill-detail {
+            max-height: 200px;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .skill-detail-content { font-size: 0.8rem; }
+        .detail-row { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center; }
+        .detail-label { color: var(--text-tertiary); flex-shrink: 0; }
+        .detail-code { 
+            background: rgba(130, 150, 170, 0.08);
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .detail-actions { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
+        .detail-btn {
+            display: flex; align-items: center; gap: 0.35rem;
+            background: rgba(90, 154, 142, 0.1);
+            border: 1px solid rgba(90, 154, 142, 0.2);
+            color: var(--accent-cyan);
+            padding: 0.35rem 0.6rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .detail-btn:hover { background: rgba(90, 154, 142, 0.15); }
+        .detail-btn svg { width: 12px; height: 12px; }
+
+        /* API section */
+        .api-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .api-stat-item { text-align: center; }
+        .api-stat-value { font-size: 1.5rem; font-weight: 600; }
+        .api-stat-label { font-size: 0.7rem; color: var(--text-tertiary); }
+
+        .api-list { display: flex; flex-direction: column; gap: 0.5rem; }
+        .api-item {
+            display: flex; align-items: center; gap: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(130, 150, 170, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+        }
+
+        .api-icon { width: 28px; height: 28px; background: rgba(90, 154, 142, 0.08); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; }
+        .api-icon svg { width: 15px; height: 15px; color: var(--accent-cyan); }
+        .api-status { width: 6px; height: 6px; border-radius: 9999px; flex-shrink: 0; }
+        .api-status.active { background: var(--p2-color); box-shadow: 0 0 6px var(--p2-color); }
+        .api-status.pending { background: var(--p1-color); box-shadow: 0 0 6px var(--p1-color); }
+        .api-info { flex: 1; }
+        .api-name { font-weight: 500; color: var(--text-primary); font-size: 0.9rem; }
+        .api-desc { font-size: 0.75rem; color: var(--text-secondary); margin-top: 1px; }
+        .api-env { display: flex; align-items: center; gap: 0.4rem; margin-top: 0.35rem; }
+        .api-env code { 
+            background: rgba(130, 150, 170, 0.08);
+            padding: 1px 5px;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+        .copy-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            padding: 2px;
+            display: flex;
+            align-items: center;
+        }
+        .copy-btn:hover { color: var(--accent-cyan); }
+        .copy-btn svg { width: 12px; height: 12px; }
+
+        .api-badge {
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-weight: 500;
+        }
+        .api-badge.active { background: rgba(112, 160, 128, 0.12); color: var(--p2-color); }
+        .api-badge.pending { background: rgba(176, 160, 112, 0.12); color: var(--p1-color); }
+
+        /* Overview stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .stat-value { font-size: 2rem; font-weight: 600; color: var(--accent-cyan); }
+        .stat-label { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.2rem; }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 0.75rem 1rem;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            z-index: 1000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Item actions (edit/delete buttons) */
+        .item-actions {
+            display: flex;
+            gap: 0.25rem;
+            margin-left: auto;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .memory-item-compact:hover .item-actions,
+        .skill-card:hover .item-actions {
+            opacity: 1;
+        }
+
+        .action-btn {
+            width: 22px;
+            height: 22px;
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            color: var(--text-tertiary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+            padding: 0;
+        }
+
+        .action-btn:hover {
+            background: rgba(130, 150, 170, 0.1);
+        }
+
+        .action-btn svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .action-btn.edit-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .action-btn.delete-btn:hover {
+            border-color: var(--p0-color);
+            color: var(--p0-color);
+        }
+
+        /* Password Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            width: 90%;
+            max-width: 360px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .modal-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .modal-input {
+            width: 100%;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 0.6rem 0.75rem;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            outline: none;
+            font-family: var(--font-mono);
+        }
+
+        .modal-input:focus {
+            border-color: var(--accent-cyan);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.15s;
+            border: 1px solid transparent;
+        }
+
+        .modal-btn.cancel {
+            background: transparent;
+            color: var(--text-secondary);
+            border-color: var(--glass-border);
+        }
+
+        .modal-btn.cancel:hover {
+            background: rgba(130, 150, 170, 0.1);
+        }
+
+        .modal-btn.confirm {
+            background: rgba(176, 112, 112, 0.15);
+            color: var(--p0-color);
+            border-color: rgba(176, 112, 112, 0.3);
+        }
+
+        .modal-btn.confirm:hover {
+            background: rgba(176, 112, 112, 0.25);
+        }
+
+        .modal-error {
+            color: var(--p0-color);
+            font-size: 0.75rem;
+            margin-top: -0.5rem;
+            margin-bottom: 0.75rem;
+            display: none;
+        }
+
+        .modal-error.show {
+            display: block;
+        }
+
+        /* Edit modal textarea */
+        .modal-textarea {
+            width: 100%;
+            min-height: 100px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 0.6rem 0.75rem;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            outline: none;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .modal-textarea:focus {
+            border-color: var(--accent-cyan);
+        }
+
+        /* Mobile menu */
+        .mobile-menu-btn {
+            display: none; position: fixed; top: 40px; left: 0.75rem;
+            z-index: 101; background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 0.5rem; cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s; }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; max-width: 100%; padding: 60px 1rem 1rem; }
+            .mobile-menu-btn { display: block; }
+            .skills-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-secondary); }
+        ::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
+
+        /* Hidden class for search */
+        .hidden { display: none !important; }
+        .highlight { background: rgba(90, 154, 142, 0.15); border-radius: 2px; }
+    </style>
+</head>
+<body>
+    <div class="bg-glow"></div>
+    <div class="bg-grid"></div>
+
+    <div class="update-banner">
+        <span>Last updated: 2026/02/14 18:37</span>
+        <span>Auto-sync: Daily 04:00 CST</span>
+    </div>
+
+    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
+
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg></div>
+                    <div class="logo-text">ClawBot</div>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <div class="nav-section">
+                    <div class="nav-section-title">Overview</div>
+                    
+        <div class="nav-item active" onclick="showPage('overview')" data-page="overview">
+            <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+            <span>Home</span>
+            
+        </div>
+    
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Memory</div>
+                    
+        <div class="nav-item " onclick="showPage('memory-p0')" data-page="memory-p0">
+            <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg></span>
+            <span>Core Identity</span>
+            <span class="nav-badge">12</span>
+        </div>
+    
+                    
+        <div class="nav-item " onclick="showPage('memory-p1')" data-page="memory-p1">
+            <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>
+            <span>Active Projects</span>
+            <span class="nav-badge">10</span>
+        </div>
+    
+                    
+        <div class="nav-item " onclick="showPage('memory-p2')" data-page="memory-p2">
+            <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+            <span>Temp Records</span>
+            <span class="nav-badge">3</span>
+        </div>
+    
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Capabilities</div>
+                    
+        <div class="nav-item " onclick="showPage('skills')" data-page="skills">
+            <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
+            <span>Skills</span>
+            <span class="nav-badge">17</span>
+        </div>
+    
+                    
+        <div class="nav-item " onclick="showPage('api')" data-page="api">
+            <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+            <span>API Keys</span>
+            <span class="nav-badge">6</span>
+        </div>
+    
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span>System Normal</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <!-- Search Bar -->
+            <div class="search-container">
+                <div class="search-box">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search memories, skills, APIs..." onkeyup="performSearch()">
+                    <span class="search-stats" id="searchStats"></span>
+                </div>
+            </div>
+
+            
+        <!-- Overview -->
+        <div class="page active" id="page-overview">
+            <div class="page-header">
+                <h1 class="page-title">Overview</h1>
+                <p class="page-subtitle">ClawBot Personal Profile Dashboard</p>
+            </div>
+            
+            <div class="glass-card">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">P0 Core Rules</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">10</div>
+                        <div class="stat-label">P1 Projects</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">P2 Records</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">17</div>
+                        <div class="stat-label">Skills</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">1/6</div>
+                        <div class="stat-label">APIs Ready</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- P0 Memory -->
+        <div class="page" id="page-memory-p0">
+            <div class="page-header">
+                <h1 class="page-title">Core Identity (P0)</h1>
+                <p class="page-subtitle">Permanent rules and identity definitions</p>
+            </div>
+            <div class="memory-container">
+                
+        <div class="category-group">
+            <div class="category-header" onclick="toggleCategory(this)">
+                <span class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
+                <span class="category-name">核心身份</span>
+                <span class="category-count">6</span>
+                <span class="category-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </div>
+            <div class="category-content">
+                
+                    <div class="memory-item-compact" data-id="P0-0">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p0">P0</span>
+                            
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P0', 0, '用户偏好中文回复')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 0, '用户偏好中文回复')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">用户偏好中文回复</div>
+                        <div class="memory-meta">永久</div>
+                    </div>
+                
+                    <div class="memory-item-compact" data-id="P0-1">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p0">P0</span>
+                            
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P0', 1, '沟通风格：直接、无废话、行动导向')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 1, '沟通风格：直接、无废话、行动导向')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">沟通风格：直接、无废话、行动导向</div>
+                        <div class="memory-meta">永久</div>
+                    </div>
+                
+                    <div class="memory-item-compact" data-id="P0-2">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p0">P0</span>
+                            
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P0', 2, '安全规则：外部操作（邮件/推文/公开发帖）前必须确认')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 2, '安全规则：外部操作（邮件/推文/公开发帖）前必须确认')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">安全规则：外部操作（邮件/推文/公开发帖）前必须确认</div>
+                        <div class="memory-meta">永久</div>
+                    </div>
+                
+                    <div class="memory-item-compact" data-id="P0-3">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p0">P0</span>
+                            
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P0', 3, '真钱操作 = 正确性 > 速度（涉及交易/支付时，用完全相同的已测试代码）')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 3, '真钱操作 = 正确性 > 速度（涉及交易/支付时，用完全相同的已测试代码）')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">真钱操作 = 正确性 > 速度（涉及交易/支付时，用完全相同的已测试代码）</div>
+                        <div class="memory-meta">永久</div>
+                    </div>
+                
+                    <div class="memory-item-compact" data-id="P0-4">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p0">P0</span>
+                            <span class="tag-small">自动化</span>
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P0', 4, '自动化两套系统：禁用/检查自动化时，查 system crontab + OpenClaw cron')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 4, '自动化两套系统：禁用/检查自动化时，查 system crontab + OpenClaw cron')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">自动化两套系统：禁用/检查自动化时，查 system crontab + OpenClaw cron</div>
+                        <div class="memory-meta">永久</div>
+                    </div>
+                
+                    <div class="memory-item-compact" data-id="P0-5">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p0">P0</span>
+                            
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P0', 5, '进程隔离：长期运行的 bot 用 setsid，否则会被 session cleanup 杀掉')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 5, '进程隔离：长期运行的 bot 用 setsid，否则会被 session cleanup 杀掉')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">进程隔离：长期运行的 bot 用 setsid，否则会被 session cleanup 杀掉</div>
+                        <div class="memory-meta">永久</div>
+                    </div>
+                
+            </div>
+        </div>
+    
+        <div class="category-group">
+            <div class="category-header" onclick="toggleCategory(this)">
+                <span class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
+                <span class="category-name">用户与项目</span>
+                <span class="category-count">2</span>
+                <span class="category-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </div>
+            <div class="category-content">
+                
+                    <div class="memory-item-compact" data-id="P0-0">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p0">P0</span>
+                            
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P0', 0, '时区：Asia/Shanghai')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 0, '时区：Asia/Shanghai')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">时区：Asia/Shanghai</div>
+                        <div class="memory-meta">永久</div>
+                    </div>
+                
+                    <div class="memory-item-compact" data-id="P0-1">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p0">P0</span>
+                            
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P0', 1, '网络代理：http://127.0.0.1:7897（ClawHub/外部工具必需）')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 1, '网络代理：http://127.0.0.1:7897（ClawHub/外部工具必需）')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">网络代理：http://127.0.0.1:7897（ClawHub/外部工具必需）</div>
+                        <div class="memory-meta">永久</div>
+                    </div>
+                
+            </div>
+        </div>
+    
+        <div class="category-group">
+            <div class="category-header" onclick="toggleCategory(this)">
+                <span class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
+                <span class="category-name">关键工具与API</span>
+                <span class="category-count">4</span>
+                <span class="category-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </div>
+            <div class="category-content">
+                
+                    <div class="memory-item-compact" data-id="P0-0">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p0">P0</span>
+                            <span class="tag-small">研究</span>
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P0', 0, 'Parallel API - 深度研究用（API Key已配置）')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 0, 'Parallel API - 深度研究用（API Key已配置）')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">Parallel API - 深度研究用（API Key已配置）</div>
+                        <div class="memory-meta">永久</div>
+                    </div>
+                
+                    <div class="memory-item-compact" data-id="P0-1">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p0">P0</span>
+                            
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P0', 1, 'yt-dlp - YouTube下载/搜索')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 1, 'yt-dlp - YouTube下载/搜索')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">yt-dlp - YouTube下载/搜索</div>
+                        <div class="memory-meta">永久</div>
+                    </div>
+                
+                    <div class="memory-item-compact" data-id="P0-2">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p0">P0</span>
+                            <span class="tag-small">DevOps</span>
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P0', 2, 'gh CLI - GitHub操作')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 2, 'gh CLI - GitHub操作')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">gh CLI - GitHub操作</div>
+                        <div class="memory-meta">永久</div>
+                    </div>
+                
+                    <div class="memory-item-compact" data-id="P0-3">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p0">P0</span>
+                            
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P0', 3, 'clawhub - 技能市场（需要代理）')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 3, 'clawhub - 技能市场（需要代理）')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">clawhub - 技能市场（需要代理）</div>
+                        <div class="memory-meta">永久</div>
+                    </div>
+                
+            </div>
+        </div>
+    
+            </div>
+        </div>
+
+        <!-- P1 Memory -->
+        <div class="page" id="page-memory-p1">
+            <div class="page-header">
+                <h1 class="page-title">Active Projects (P1)</h1>
+                <p class="page-subtitle">90-day TTL current projects</p>
+            </div>
+            <div class="memory-container">
+                
+        <div class="category-group">
+            <div class="category-header" onclick="toggleCategory(this)">
+                <span class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
+                <span class="category-name">用户与项目</span>
+                <span class="category-count">2</span>
+                <span class="category-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </div>
+            <div class="category-content">
+                
+                    <div class="memory-item-compact" data-id="P1-0">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p1">P1</span>
+                            <span class="tag-small">硬件</span><span class="tag-small">研究</span>
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P1', 0, '港区定位系统项目 - 成本<4500元，已完成可行性研究')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 0, '港区定位系统项目 - 成本<4500元，已完成可行性研究')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">港区定位系统项目 - 成本<4500元，已完成可行性研究</div>
+                        <div class="memory-meta">2026-02-11</div>
+                    </div>
+                
+                    <div class="memory-item-compact" data-id="P1-1">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p1">P1</span>
+                            <span class="tag-small">研究</span>
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P1', 1, '货轮风帆系统调研 - 已完成软件算法与市场分析')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 1, '货轮风帆系统调研 - 已完成软件算法与市场分析')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">货轮风帆系统调研 - 已完成软件算法与市场分析</div>
+                        <div class="memory-meta">2026-02-11</div>
+                    </div>
+                
+            </div>
+        </div>
+    
+        <div class="category-group">
+            <div class="category-header" onclick="toggleCategory(this)">
+                <span class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
+                <span class="category-name">关键工具与API</span>
+                <span class="category-count">3</span>
+                <span class="category-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </div>
+            <div class="category-content">
+                
+                    <div class="memory-item-compact" data-id="P1-0">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p1">P1</span>
+                            
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P1', 0, 'project-scaffolder - 项目脚手架')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 0, 'project-scaffolder - 项目脚手架')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">project-scaffolder - 项目脚手架</div>
+                        <div class="memory-meta">2026-02-11</div>
+                    </div>
+                
+                    <div class="memory-item-compact" data-id="P1-1">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p1">P1</span>
+                            
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P1', 1, 'pdf-generator - Markdown转PDF')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 1, 'pdf-generator - Markdown转PDF')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">pdf-generator - Markdown转PDF</div>
+                        <div class="memory-meta">2026-02-11</div>
+                    </div>
+                
+                    <div class="memory-item-compact" data-id="P1-2">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p1">P1</span>
+                            
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P1', 2, 'diagram-generator - Mermaid转图表')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 2, 'diagram-generator - Mermaid转图表')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">diagram-generator - Mermaid转图表</div>
+                        <div class="memory-meta">2026-02-11</div>
+                    </div>
+                
+            </div>
+        </div>
+    
+        <div class="category-group">
+            <div class="category-header" onclick="toggleCategory(this)">
+                <span class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
+                <span class="category-name">活跃配置</span>
+                <span class="category-count">5</span>
+                <span class="category-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </div>
+            <div class="category-content">
+                
+                    <div class="memory-item-compact" data-id="P1-0">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p1">P1</span>
+                            <span class="tag-small">自动化</span>
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P1', 0, '每日OpenClaw案例跟进任务 - 每日9:00自动执行，使用免费工具搜索YouTube/ClawHub最新用例，必须包含视频/技能链接')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 0, '每日OpenClaw案例跟进任务 - 每日9:00自动执行，使用免费工具搜索YouTube/ClawHub最新用例，必须包含视频/技能链接')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">每日OpenClaw案例跟进任务 - 每日9:00自动执行，使用免费工具搜索YouTube/ClawHub最新用例，必须包含视频/技能链接</div>
+                        <div class="memory-meta">2026-02-11</div>
+                    </div>
+                
+                    <div class="memory-item-compact" data-id="P1-1">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p1">P1</span>
+                            <span class="tag-small">自动化</span>
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P1', 1, 'ClawBot Profile自动同步 - 每日4:00自动从MEMORY.md/TOOLS.md生成个人资料网页')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 1, 'ClawBot Profile自动同步 - 每日4:00自动从MEMORY.md/TOOLS.md生成个人资料网页')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">ClawBot Profile自动同步 - 每日4:00自动从MEMORY.md/TOOLS.md生成个人资料网页</div>
+                        <div class="memory-meta">2026-02-14</div>
+                    </div>
+                
+                    <div class="memory-item-compact" data-id="P1-2">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p1">P1</span>
+                            <span class="tag-small">自动化</span>
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P1', 2, 'Cron任务: daily-openclaw-cases（每日9:00执行）')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 2, 'Cron任务: daily-openclaw-cases（每日9:00执行）')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">Cron任务: daily-openclaw-cases（每日9:00执行）</div>
+                        <div class="memory-meta">2026-02-11</div>
+                    </div>
+                
+                    <div class="memory-item-compact" data-id="P1-3">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p1">P1</span>
+                            <span class="tag-small">自动化</span><span class="tag-small">DevOps</span>
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P1', 3, '记忆系统: 已部署P0/P1/P2自动归档')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 3, '记忆系统: 已部署P0/P1/P2自动归档')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">记忆系统: 已部署P0/P1/P2自动归档</div>
+                        <div class="memory-meta">2026-02-11</div>
+                    </div>
+                
+                    <div class="memory-item-compact" data-id="P1-4">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p1">P1</span>
+                            <span class="tag-small">自动化</span>
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P1', 4, '定时任务状态: 正常运行，首次执行成功')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 4, '定时任务状态: 正常运行，首次执行成功')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">定时任务状态: 正常运行，首次执行成功</div>
+                        <div class="memory-meta">2026-02-12</div>
+                    </div>
+                
+            </div>
+        </div>
+    
+            </div>
+        </div>
+
+        <!-- P2 Memory -->
+        <div class="page" id="page-memory-p2">
+            <div class="page-header">
+                <h1 class="page-title">Temp Records (P2)</h1>
+                <p class="page-subtitle">30-day TTL debug records</p>
+            </div>
+            <div class="memory-container">
+                
+        <div class="category-group">
+            <div class="category-header" onclick="toggleCategory(this)">
+                <span class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
+                <span class="category-name">临时记录</span>
+                <span class="category-count">3</span>
+                <span class="category-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </div>
+            <div class="category-content">
+                
+                    <div class="memory-item-compact" data-id="P2-0">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p2">P2</span>
+                            
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P2', 0, '调试Parallel API调用路径（已完成）')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P2', 0, '调试Parallel API调用路径（已完成）')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">调试Parallel API调用路径（已完成）</div>
+                        <div class="memory-meta">2026-02-11</div>
+                    </div>
+                
+                    <div class="memory-item-compact" data-id="P2-1">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p2">P2</span>
+                            
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P2', 1, 'PowerPoint生成测试（v1失败，v2修复成功）')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P2', 1, 'PowerPoint生成测试（v1失败，v2修复成功）')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">PowerPoint生成测试（v1失败，v2修复成功）</div>
+                        <div class="memory-meta">2026-02-11</div>
+                    </div>
+                
+                    <div class="memory-item-compact" data-id="P2-2">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p2">P2</span>
+                            <span class="tag-small">DevOps</span>
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P2', 2, '记忆系统分析完成，开始部署优化')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P2', 2, '记忆系统分析完成，开始部署优化')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">记忆系统分析完成，开始部署优化</div>
+                        <div class="memory-meta">2026-02-12</div>
+                    </div>
+                
+            </div>
+        </div>
+    
+            </div>
+        </div>
+
+        <!-- Skills -->
+        <div class="page" id="page-skills">
+            <div class="page-header">
+                <h1 class="page-title">Skills Matrix</h1>
+                <p class="page-subtitle">17 installed skills by frequency</p>
+            </div>
+            
+        <div class="skill-group">
+            <div class="skill-group-header">
+                <div class="skill-group-title" style="color: #5a9a8e">
+                    核心技能
+                </div>
+                <div class="skill-group-desc">每日使用 · 3个</div>
+            </div>
+            <div class="skills-grid">
+                
+                    <div class="skill-card" onclick="toggleSkillDetail(this)" data-skill="md-to-feishu">
+                        <div class="skill-header">
+                            <div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+                            <div class="skill-info">
+                                <div class="skill-name">md-to-feishu</div>
+                                <div class="skill-category">飞书工具</div>
+                            </div>
+                            <div class="item-actions" onclick="event.stopPropagation()">
+                                <button class="action-btn edit-btn" onclick="editSkill('md-to-feishu', 'Markdown一键同步到飞书云文档')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteSkill('md-to-feishu')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                            <div class="skill-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="skill-desc">Markdown一键同步到飞书云文档</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag tag-normal">免费</span><span class="skill-tag tag-normal">核心</span>
+                        </div>
+                        <div class="skill-detail">
+                            <div class="skill-detail-content">
+                                <div class="detail-row">
+                                    <span class="detail-label">文档路径:</span>
+                                    <code class="detail-code">/skills/md-to-feishu/SKILL.md</code>
+                                </div>
+                                <div class="detail-actions">
+                                    <button class="detail-btn" onclick="event.stopPropagation(); copyToClipboard('/skills/md-to-feishu/SKILL.md')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> 复制路径
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="skill-card" onclick="toggleSkillDetail(this)" data-skill="feishu-doc-optimizer">
+                        <div class="skill-header">
+                            <div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+                            <div class="skill-info">
+                                <div class="skill-name">feishu-doc-optimizer</div>
+                                <div class="skill-category">飞书工具</div>
+                            </div>
+                            <div class="item-actions" onclick="event.stopPropagation()">
+                                <button class="action-btn edit-btn" onclick="editSkill('feishu-doc-optimizer', '飞书文档优化写入工具')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteSkill('feishu-doc-optimizer')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                            <div class="skill-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="skill-desc">飞书文档优化写入工具</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag tag-normal">免费</span><span class="skill-tag tag-normal">核心</span>
+                        </div>
+                        <div class="skill-detail">
+                            <div class="skill-detail-content">
+                                <div class="detail-row">
+                                    <span class="detail-label">文档路径:</span>
+                                    <code class="detail-code">/skills/feishu-doc-optimizer/</code>
+                                </div>
+                                <div class="detail-actions">
+                                    <button class="detail-btn" onclick="event.stopPropagation(); copyToClipboard('/skills/feishu-doc-optimizer/')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> 复制路径
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="skill-card" onclick="toggleSkillDetail(this)" data-skill="parallel">
+                        <div class="skill-header">
+                            <div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                            <div class="skill-info">
+                                <div class="skill-name">parallel</div>
+                                <div class="skill-category">研究分析</div>
+                            </div>
+                            <div class="item-actions" onclick="event.stopPropagation()">
+                                <button class="action-btn edit-btn" onclick="editSkill('parallel', '高精度网络搜索、深度研究')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteSkill('parallel')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                            <div class="skill-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="skill-desc">高精度网络搜索、深度研究</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag tag-active">已配置</span><span class="skill-tag tag-normal">核心</span>
+                        </div>
+                        <div class="skill-detail">
+                            <div class="skill-detail-content">
+                                <div class="detail-row">
+                                    <span class="detail-label">文档路径:</span>
+                                    <code class="detail-code">/skills/parallel/</code>
+                                </div>
+                                <div class="detail-actions">
+                                    <button class="detail-btn" onclick="event.stopPropagation(); copyToClipboard('/skills/parallel/')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> 复制路径
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+            </div>
+        </div>
+    
+        <div class="skill-group">
+            <div class="skill-group-header">
+                <div class="skill-group-title" style="color: #6a8a9a">
+                    常用技能
+                </div>
+                <div class="skill-group-desc">每周使用 · 4个</div>
+            </div>
+            <div class="skills-grid">
+                
+                    <div class="skill-card" onclick="toggleSkillDetail(this)" data-skill="pdf-generator">
+                        <div class="skill-header">
+                            <div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+                            <div class="skill-info">
+                                <div class="skill-name">pdf-generator</div>
+                                <div class="skill-category">文档处理</div>
+                            </div>
+                            <div class="item-actions" onclick="event.stopPropagation()">
+                                <button class="action-btn edit-btn" onclick="editSkill('pdf-generator', 'Markdown或HTML转PDF')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteSkill('pdf-generator')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                            <div class="skill-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="skill-desc">Markdown或HTML转PDF</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag tag-normal">免费</span><span class="skill-tag tag-normal">常用</span>
+                        </div>
+                        <div class="skill-detail">
+                            <div class="skill-detail-content">
+                                <div class="detail-row">
+                                    <span class="detail-label">文档路径:</span>
+                                    <code class="detail-code">/skills/pdf-generator/</code>
+                                </div>
+                                <div class="detail-actions">
+                                    <button class="detail-btn" onclick="event.stopPropagation(); copyToClipboard('/skills/pdf-generator/')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> 复制路径
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="skill-card" onclick="toggleSkillDetail(this)" data-skill="diagram-generator">
+                        <div class="skill-header">
+                            <div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+                            <div class="skill-info">
+                                <div class="skill-name">diagram-generator</div>
+                                <div class="skill-category">文档处理</div>
+                            </div>
+                            <div class="item-actions" onclick="event.stopPropagation()">
+                                <button class="action-btn edit-btn" onclick="editSkill('diagram-generator', 'Mermaid/PlantUML生成技术图表')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteSkill('diagram-generator')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                            <div class="skill-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="skill-desc">Mermaid/PlantUML生成技术图表</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag tag-normal">免费</span><span class="skill-tag tag-normal">常用</span>
+                        </div>
+                        <div class="skill-detail">
+                            <div class="skill-detail-content">
+                                <div class="detail-row">
+                                    <span class="detail-label">文档路径:</span>
+                                    <code class="detail-code">/skills/diagram-generator/</code>
+                                </div>
+                                <div class="detail-actions">
+                                    <button class="detail-btn" onclick="event.stopPropagation(); copyToClipboard('/skills/diagram-generator/')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> 复制路径
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="skill-card" onclick="toggleSkillDetail(this)" data-skill="project-scaffolder">
+                        <div class="skill-header">
+                            <div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+                            <div class="skill-info">
+                                <div class="skill-name">project-scaffolder</div>
+                                <div class="skill-category">代码开发</div>
+                            </div>
+                            <div class="item-actions" onclick="event.stopPropagation()">
+                                <button class="action-btn edit-btn" onclick="editSkill('project-scaffolder', '项目脚手架工具')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteSkill('project-scaffolder')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                            <div class="skill-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="skill-desc">项目脚手架工具</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag tag-normal">免费</span><span class="skill-tag tag-normal">常用</span>
+                        </div>
+                        <div class="skill-detail">
+                            <div class="skill-detail-content">
+                                <div class="detail-row">
+                                    <span class="detail-label">文档路径:</span>
+                                    <code class="detail-code">/skills/project-scaffolder/</code>
+                                </div>
+                                <div class="detail-actions">
+                                    <button class="detail-btn" onclick="event.stopPropagation(); copyToClipboard('/skills/project-scaffolder/')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> 复制路径
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="skill-card" onclick="toggleSkillDetail(this)" data-skill="feishu-doc-advanced">
+                        <div class="skill-header">
+                            <div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+                            <div class="skill-info">
+                                <div class="skill-name">feishu-doc-advanced</div>
+                                <div class="skill-category">飞书工具</div>
+                            </div>
+                            <div class="item-actions" onclick="event.stopPropagation()">
+                                <button class="action-btn edit-btn" onclick="editSkill('feishu-doc-advanced', '本地图片上传到飞书云空间')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteSkill('feishu-doc-advanced')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                            <div class="skill-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="skill-desc">本地图片上传到飞书云空间</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag tag-normal">免费</span><span class="skill-tag tag-normal">高级</span>
+                        </div>
+                        <div class="skill-detail">
+                            <div class="skill-detail-content">
+                                <div class="detail-row">
+                                    <span class="detail-label">文档路径:</span>
+                                    <code class="detail-code">/skills/feishu-doc-advanced/</code>
+                                </div>
+                                <div class="detail-actions">
+                                    <button class="detail-btn" onclick="event.stopPropagation(); copyToClipboard('/skills/feishu-doc-advanced/')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> 复制路径
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+            </div>
+        </div>
+    
+        <div class="skill-group">
+            <div class="skill-group-header">
+                <div class="skill-group-title" style="color: #8a9aa8">
+                    备用技能
+                </div>
+                <div class="skill-group-desc">按需使用 · 10个</div>
+            </div>
+            <div class="skills-grid">
+                
+                    <div class="skill-card" onclick="toggleSkillDetail(this)" data-skill="markdown-slides">
+                        <div class="skill-header">
+                            <div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+                            <div class="skill-info">
+                                <div class="skill-name">markdown-slides</div>
+                                <div class="skill-category">文档处理</div>
+                            </div>
+                            <div class="item-actions" onclick="event.stopPropagation()">
+                                <button class="action-btn edit-btn" onclick="editSkill('markdown-slides', 'Markdown转HTML幻灯片')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteSkill('markdown-slides')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                            <div class="skill-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="skill-desc">Markdown转HTML幻灯片</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag tag-normal">免费</span>
+                        </div>
+                        <div class="skill-detail">
+                            <div class="skill-detail-content">
+                                <div class="detail-row">
+                                    <span class="detail-label">文档路径:</span>
+                                    <code class="detail-code">/skills/markdown-slides/</code>
+                                </div>
+                                <div class="detail-actions">
+                                    <button class="detail-btn" onclick="event.stopPropagation(); copyToClipboard('/skills/markdown-slides/')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> 复制路径
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="skill-card" onclick="toggleSkillDetail(this)" data-skill="basecamp">
+                        <div class="skill-header">
+                            <div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+                            <div class="skill-info">
+                                <div class="skill-name">basecamp</div>
+                                <div class="skill-category">项目管理</div>
+                            </div>
+                            <div class="item-actions" onclick="event.stopPropagation()">
+                                <button class="action-btn edit-btn" onclick="editSkill('basecamp', 'Basecamp API集成')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteSkill('basecamp')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                            <div class="skill-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="skill-desc">Basecamp API集成</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag tag-normal">API Key</span>
+                        </div>
+                        <div class="skill-detail">
+                            <div class="skill-detail-content">
+                                <div class="detail-row">
+                                    <span class="detail-label">文档路径:</span>
+                                    <code class="detail-code">/skills/basecamp/</code>
+                                </div>
+                                <div class="detail-actions">
+                                    <button class="detail-btn" onclick="event.stopPropagation(); copyToClipboard('/skills/basecamp/')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> 复制路径
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="skill-card" onclick="toggleSkillDetail(this)" data-skill="data-cog">
+                        <div class="skill-header">
+                            <div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+                            <div class="skill-info">
+                                <div class="skill-name">data-cog</div>
+                                <div class="skill-category">研究分析</div>
+                            </div>
+                            <div class="item-actions" onclick="event.stopPropagation()">
+                                <button class="action-btn edit-btn" onclick="editSkill('data-cog', '数据分析、CSV处理、可视化')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteSkill('data-cog')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                            <div class="skill-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="skill-desc">数据分析、CSV处理、可视化</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag tag-normal">CellCog</span>
+                        </div>
+                        <div class="skill-detail">
+                            <div class="skill-detail-content">
+                                <div class="detail-row">
+                                    <span class="detail-label">文档路径:</span>
+                                    <code class="detail-code">/skills/data-cog/</code>
+                                </div>
+                                <div class="detail-actions">
+                                    <button class="detail-btn" onclick="event.stopPropagation(); copyToClipboard('/skills/data-cog/')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> 复制路径
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="skill-card" onclick="toggleSkillDetail(this)" data-skill="fin-cog">
+                        <div class="skill-header">
+                            <div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+                            <div class="skill-info">
+                                <div class="skill-name">fin-cog</div>
+                                <div class="skill-category">研究分析</div>
+                            </div>
+                            <div class="item-actions" onclick="event.stopPropagation()">
+                                <button class="action-btn edit-btn" onclick="editSkill('fin-cog', '金融分析、股票研究')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteSkill('fin-cog')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                            <div class="skill-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="skill-desc">金融分析、股票研究</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag tag-normal">CellCog</span>
+                        </div>
+                        <div class="skill-detail">
+                            <div class="skill-detail-content">
+                                <div class="detail-row">
+                                    <span class="detail-label">文档路径:</span>
+                                    <code class="detail-code">/skills/fin-cog/</code>
+                                </div>
+                                <div class="detail-actions">
+                                    <button class="detail-btn" onclick="event.stopPropagation(); copyToClipboard('/skills/fin-cog/')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> 复制路径
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="skill-card" onclick="toggleSkillDetail(this)" data-skill="proto-cog">
+                        <div class="skill-header">
+                            <div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6m4.22-10.22l4.24-4.24M6.34 6.34L2.1 2.1m18.8 18.8l-4.24-4.24M6.34 17.66l-4.24 4.24M23 12h-6m-6 0H1m20.24 4.24l-4.24-4.24M6.34 17.66l-4.24 4.24"/></svg></div>
+                            <div class="skill-info">
+                                <div class="skill-name">proto-cog</div>
+                                <div class="skill-category">产品设计</div>
+                            </div>
+                            <div class="item-actions" onclick="event.stopPropagation()">
+                                <button class="action-btn edit-btn" onclick="editSkill('proto-cog', '产品原型设计（UI/UX）')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteSkill('proto-cog')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                            <div class="skill-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="skill-desc">产品原型设计（UI/UX）</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag tag-normal">CellCog</span>
+                        </div>
+                        <div class="skill-detail">
+                            <div class="skill-detail-content">
+                                <div class="detail-row">
+                                    <span class="detail-label">文档路径:</span>
+                                    <code class="detail-code">/skills/proto-cog/</code>
+                                </div>
+                                <div class="detail-actions">
+                                    <button class="detail-btn" onclick="event.stopPropagation(); copyToClipboard('/skills/proto-cog/')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> 复制路径
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="skill-card" onclick="toggleSkillDetail(this)" data-skill="technical-seo-checker">
+                        <div class="skill-header">
+                            <div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                            <div class="skill-info">
+                                <div class="skill-name">technical-seo-checker</div>
+                                <div class="skill-category">研究分析</div>
+                            </div>
+                            <div class="item-actions" onclick="event.stopPropagation()">
+                                <button class="action-btn edit-btn" onclick="editSkill('technical-seo-checker', '技术SEO审计')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteSkill('technical-seo-checker')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                            <div class="skill-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="skill-desc">技术SEO审计</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag tag-normal">免费</span>
+                        </div>
+                        <div class="skill-detail">
+                            <div class="skill-detail-content">
+                                <div class="detail-row">
+                                    <span class="detail-label">文档路径:</span>
+                                    <code class="detail-code">/skills/technical-seo-checker/</code>
+                                </div>
+                                <div class="detail-actions">
+                                    <button class="detail-btn" onclick="event.stopPropagation(); copyToClipboard('/skills/technical-seo-checker/')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> 复制路径
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="skill-card" onclick="toggleSkillDetail(this)" data-skill="search-x">
+                        <div class="skill-header">
+                            <div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+                            <div class="skill-info">
+                                <div class="skill-name">search-x</div>
+                                <div class="skill-category">研究分析</div>
+                            </div>
+                            <div class="item-actions" onclick="event.stopPropagation()">
+                                <button class="action-btn edit-btn" onclick="editSkill('search-x', 'X/Twitter实时搜索')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteSkill('search-x')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                            <div class="skill-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="skill-desc">X/Twitter实时搜索</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag tag-pending">待配置</span>
+                        </div>
+                        <div class="skill-detail">
+                            <div class="skill-detail-content">
+                                <div class="detail-row">
+                                    <span class="detail-label">文档路径:</span>
+                                    <code class="detail-code">/skills/search-x/</code>
+                                </div>
+                                <div class="detail-actions">
+                                    <button class="detail-btn" onclick="event.stopPropagation(); copyToClipboard('/skills/search-x/')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> 复制路径
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="skill-card" onclick="toggleSkillDetail(this)" data-skill="xai">
+                        <div class="skill-header">
+                            <div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg></div>
+                            <div class="skill-info">
+                                <div class="skill-name">xai</div>
+                                <div class="skill-category">研究分析</div>
+                            </div>
+                            <div class="item-actions" onclick="event.stopPropagation()">
+                                <button class="action-btn edit-btn" onclick="editSkill('xai', 'Grok模型对话')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteSkill('xai')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                            <div class="skill-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="skill-desc">Grok模型对话</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag tag-pending">待配置</span>
+                        </div>
+                        <div class="skill-detail">
+                            <div class="skill-detail-content">
+                                <div class="detail-row">
+                                    <span class="detail-label">文档路径:</span>
+                                    <code class="detail-code">/skills/xai/</code>
+                                </div>
+                                <div class="detail-actions">
+                                    <button class="detail-btn" onclick="event.stopPropagation(); copyToClipboard('/skills/xai/')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> 复制路径
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="skill-card" onclick="toggleSkillDetail(this)" data-skill="ai-notes-ofvideo">
+                        <div class="skill-header">
+                            <div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg></div>
+                            <div class="skill-info">
+                                <div class="skill-name">ai-notes-ofvideo</div>
+                                <div class="skill-category">研究分析</div>
+                            </div>
+                            <div class="item-actions" onclick="event.stopPropagation()">
+                                <button class="action-btn edit-btn" onclick="editSkill('ai-notes-ofvideo', '视频转AI笔记')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteSkill('ai-notes-ofvideo')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                            <div class="skill-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="skill-desc">视频转AI笔记</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag tag-pending">待配置</span>
+                        </div>
+                        <div class="skill-detail">
+                            <div class="skill-detail-content">
+                                <div class="detail-row">
+                                    <span class="detail-label">文档路径:</span>
+                                    <code class="detail-code">/skills/ai-notes-ofvideo/</code>
+                                </div>
+                                <div class="detail-actions">
+                                    <button class="detail-btn" onclick="event.stopPropagation(); copyToClipboard('/skills/ai-notes-ofvideo/')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> 复制路径
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="skill-card" onclick="toggleSkillDetail(this)" data-skill="low-power-panoramic-stitching">
+                        <div class="skill-header">
+                            <div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
+                            <div class="skill-info">
+                                <div class="skill-name">low-power-panoramic-stitching</div>
+                                <div class="skill-category">图像处理</div>
+                            </div>
+                            <div class="item-actions" onclick="event.stopPropagation()">
+                                <button class="action-btn edit-btn" onclick="editSkill('low-power-panoramic-stitching', '低功耗全景图像拼接')" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteSkill('low-power-panoramic-stitching')" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                            <div class="skill-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+                        </div>
+                        <div class="skill-desc">低功耗全景图像拼接</div>
+                        <div class="skill-tags">
+                            <span class="skill-tag tag-normal">免费</span>
+                        </div>
+                        <div class="skill-detail">
+                            <div class="skill-detail-content">
+                                <div class="detail-row">
+                                    <span class="detail-label">文档路径:</span>
+                                    <code class="detail-code">/skills/low-power-panoramic-stitching/</code>
+                                </div>
+                                <div class="detail-actions">
+                                    <button class="detail-btn" onclick="event.stopPropagation(); copyToClipboard('/skills/low-power-panoramic-stitching/')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> 复制路径
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+            </div>
+        </div>
+    
+        </div>
+
+        <!-- API -->
+        <div class="page" id="page-api">
+            <div class="page-header">
+                <h1 class="page-title">API Configuration</h1>
+                <p class="page-subtitle">External service API keys status</p>
+            </div>
+            <div class="glass-card">
+                
+        <div class="api-stats">
+            <div class="api-stat-item">
+                <div class="api-stat-value" style="color: #70a080">1</div>
+                <div class="api-stat-label">已配置</div>
+            </div>
+            <div class="api-stat-item">
+                <div class="api-stat-value" style="color: #b0a070">5</div>
+                <div class="api-stat-label">待配置</div>
+            </div>
+            <div class="api-stat-item">
+                <div class="api-stat-value">6</div>
+                <div class="api-stat-label">总计</div>
+            </div>
+        </div>
+        <div class="api-list">
+            
+                <div class="api-item">
+                    <div class="api-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                    <div class="api-status active"></div>
+                    <div class="api-info">
+                        <div class="api-name">Parallel API</div>
+                        <div class="api-desc">深度研究、学术调研</div>
+                        <div class="api-env">
+                            <code>PARALLEL_API_KEY</code>
+                            <button class="copy-btn" onclick="copyToClipboard('export PARALLEL_API_KEY=your_key_here')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="api-badge active">已配置</div>
+                </div>
+            
+                <div class="api-item">
+                    <div class="api-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg></div>
+                    <div class="api-status pending"></div>
+                    <div class="api-info">
+                        <div class="api-name">xAI API</div>
+                        <div class="api-desc">X搜索、Grok对话</div>
+                        <div class="api-env">
+                            <code>XAI_API_KEY</code>
+                            <button class="copy-btn" onclick="copyToClipboard('export XAI_API_KEY=your_key_here')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="api-badge pending">待配置</div>
+                </div>
+            
+                <div class="api-item">
+                    <div class="api-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                    <div class="api-status pending"></div>
+                    <div class="api-info">
+                        <div class="api-name">Brave Search</div>
+                        <div class="api-desc">网络搜索</div>
+                        <div class="api-env">
+                            <code>BRAVE_API_KEY</code>
+                            <button class="copy-btn" onclick="copyToClipboard('export BRAVE_API_KEY=your_key_here')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="api-badge pending">待配置</div>
+                </div>
+            
+                <div class="api-item">
+                    <div class="api-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg></div>
+                    <div class="api-status pending"></div>
+                    <div class="api-info">
+                        <div class="api-name">Baidu API</div>
+                        <div class="api-desc">视频转AI笔记</div>
+                        <div class="api-env">
+                            <code>BAIDU_API_KEY</code>
+                            <button class="copy-btn" onclick="copyToClipboard('export BAIDU_API_KEY=your_key_here')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="api-badge pending">待配置</div>
+                </div>
+            
+                <div class="api-item">
+                    <div class="api-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+                    <div class="api-status pending"></div>
+                    <div class="api-info">
+                        <div class="api-name">CellCog API</div>
+                        <div class="api-desc">data-cog、fin-cog、proto-cog</div>
+                        <div class="api-env">
+                            <code>CellCog API</code>
+                            <button class="copy-btn" onclick="copyToClipboard('export CellCog API=your_key_here')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="api-badge pending">待配置</div>
+                </div>
+            
+                <div class="api-item">
+                    <div class="api-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+                    <div class="api-status pending"></div>
+                    <div class="api-info">
+                        <div class="api-name">Maton API</div>
+                        <div class="api-desc">Basecamp项目管理</div>
+                        <div class="api-env">
+                            <code>MATON_API_KEY</code>
+                            <button class="copy-btn" onclick="copyToClipboard('export MATON_API_KEY=your_key_here')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="api-badge pending">待配置</div>
+                </div>
+            
+        </div>
+    
+            </div>
+        </div>
+    
+        </main>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <!-- Password Modal -->
+    <div class="modal-overlay" id="passwordModal">
+        <div class="modal">
+            <div class="modal-title" id="modalTitle">验证密码</div>
+            <div class="modal-desc" id="modalDesc">请输入密码以继续操作</div>
+            <div class="modal-error" id="modalError">密码错误</div>
+            <input type="password" class="modal-input" id="passwordInput" placeholder="输入密码...">
+            <div class="modal-actions">
+                <button class="modal-btn cancel" onclick="closeModal()">取消</button>
+                <button class="modal-btn confirm" onclick="verifyPassword()">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal">
+            <div class="modal-title" id="editModalTitle">编辑内容</div>
+            <textarea class="modal-textarea" id="editTextarea" placeholder="输入内容..."></textarea>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" onclick="closeEditModal()">取消</button>
+                <button class="modal-btn confirm" onclick="saveEdit()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Password
+        const DELETE_PASSWORD = '002324';
+        let pendingDelete = null;
+        let pendingEdit = null;
+
+        // Modal functions
+        function showPasswordModal(title, desc, callback) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalDesc').textContent = desc;
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('modalError').classList.remove('show');
+            document.getElementById('passwordModal').classList.add('show');
+            document.getElementById('passwordInput').focus();
+            pendingDelete = callback;
+        }
+
+        function closeModal() {
+            document.getElementById('passwordModal').classList.remove('show');
+            pendingDelete = null;
+        }
+
+        function verifyPassword() {
+            const input = document.getElementById('passwordInput').value;
+            if (input === DELETE_PASSWORD) {
+                closeModal();
+                if (pendingDelete) pendingDelete();
+            } else {
+                document.getElementById('modalError').classList.add('show');
+                document.getElementById('passwordInput').value = '';
+            }
+        }
+
+        // Edit modal functions
+        function showEditModal(title, content, callback) {
+            document.getElementById('editModalTitle').textContent = title;
+            document.getElementById('editTextarea').value = content;
+            document.getElementById('editModal').classList.add('show');
+            pendingEdit = callback;
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('show');
+            pendingEdit = null;
+        }
+
+        function saveEdit() {
+            const content = document.getElementById('editTextarea').value;
+            closeEditModal();
+            if (pendingEdit) pendingEdit(content);
+        }
+
+        // API base URL
+        const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3000' : '';
+
+        // Delete functions
+        function deleteItem(level, index, content) {
+            showPasswordModal(
+                '删除记忆项',
+                '删除后将无法恢复，请输入密码确认：',
+                function() {
+                    const item = document.querySelector('[data-id="' + level + '-' + index + '"]');
+                    if (item) {
+                        item.style.opacity = '0.5';
+                        
+                        // 调用API删除
+                        fetch(API_BASE + '/api/memory/item', {
+                            method: 'DELETE',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ password: DELETE_PASSWORD, level: level, index: index })
+                        })
+                        .then(r => r.json())
+                        .then(data => {
+                            if (data.success) {
+                                item.style.opacity = '0';
+                                item.style.transform = 'translateX(20px)';
+                                setTimeout(function() { item.remove(); }, 300);
+                                showToast('已删除（页面2分钟后更新）');
+                            } else {
+                                showToast('删除失败: ' + data.error);
+                                item.style.opacity = '1';
+                            }
+                        })
+                        .catch(e => {
+                            showToast('API调用失败，请确保本地服务器已启动');
+                            item.style.opacity = '1';
+                            console.error(e);
+                        });
+                    }
+                }
+            );
+        }
+
+        function deleteSkill(name) {
+            showPasswordModal(
+                '删除技能',
+                '确定要删除技能 "' + name + '" 吗？请输入密码确认：',
+                function() {
+                    const skill = document.querySelector('[data-skill="' + name + '"]');
+                    if (skill) {
+                        skill.style.opacity = '0.5';
+                        
+                        // 调用API删除
+                        fetch(API_BASE + '/api/skill', {
+                            method: 'DELETE',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ password: DELETE_PASSWORD, name: name })
+                        })
+                        .then(r => r.json())
+                        .then(data => {
+                            if (data.success) {
+                                skill.style.opacity = '0';
+                                skill.style.transform = 'scale(0.95)';
+                                setTimeout(function() { skill.remove(); }, 300);
+                                showToast('已删除（页面2分钟后更新）');
+                            } else {
+                                showToast('删除失败: ' + data.error);
+                                skill.style.opacity = '1';
+                            }
+                        })
+                        .catch(e => {
+                            showToast('API调用失败，请确保本地服务器已启动');
+                            skill.style.opacity = '1';
+                            console.error(e);
+                        });
+                    }
+                }
+            );
+        }
+
+        // Edit functions
+        function editMemory(level, index, content) {
+            showEditModal(
+                '编辑记忆项',
+                content,
+                function(newContent) {
+                    const item = document.querySelector('[data-id="' + level + '-' + index + '"]').querySelector('.memory-text');
+                    if (item) {
+                        item.style.opacity = '0.5';
+                        
+                        // 调用API编辑
+                        fetch(API_BASE + '/api/memory/item', {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ password: DELETE_PASSWORD, level: level, index: index, newContent: newContent })
+                        })
+                        .then(r => r.json())
+                        .then(data => {
+                            if (data.success) {
+                                item.textContent = newContent;
+                                item.style.opacity = '1';
+                                showToast('已保存（页面2分钟后更新）');
+                            } else {
+                                showToast('保存失败: ' + data.error);
+                                item.style.opacity = '1';
+                            }
+                        })
+                        .catch(e => {
+                            showToast('API调用失败，请确保本地服务器已启动');
+                            item.style.opacity = '1';
+                            item.textContent = newContent; // 本地仍然更新
+                            console.error(e);
+                        });
+                    }
+                }
+            );
+        }
+
+        function editSkill(name, desc) {
+            showEditModal(
+                '编辑技能: ' + name,
+                desc,
+                function(newDesc) {
+                    const skill = document.querySelector('[data-skill="' + name + '"]').querySelector('.skill-desc');
+                    if (skill) {
+                        skill.style.opacity = '0.5';
+                        
+                        // 调用API编辑
+                        fetch(API_BASE + '/api/skill', {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ password: DELETE_PASSWORD, name: name, newDesc: newDesc })
+                        })
+                        .then(r => r.json())
+                        .then(data => {
+                            if (data.success) {
+                                skill.textContent = newDesc;
+                                skill.style.opacity = '1';
+                                showToast('已保存（页面2分钟后更新）');
+                            } else {
+                                showToast('保存失败: ' + data.error);
+                                skill.style.opacity = '1';
+                            }
+                        })
+                        .catch(e => {
+                            showToast('API调用失败，请确保本地服务器已启动');
+                            skill.style.opacity = '1';
+                            skill.textContent = newDesc; // 本地仍然更新
+                            console.error(e);
+                        });
+                    }
+                }
+            );
+        }
+
+        // Close modals on overlay click
+        document.getElementById('passwordModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        document.getElementById('editModal').addEventListener('click', function(e) {
+            if (e.target === this) closeEditModal();
+        });
+
+        // Enter key to submit password
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') verifyPassword();
+        });
+
+        // Page navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => {
+                if (n.getAttribute('onclick')?.includes(pageId)) n.classList.add('active');
+            });
+            document.getElementById('sidebar').classList.remove('open');
+            window.scrollTo(0, 0);
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        document.addEventListener('click', function(e) {
+            const sidebar = document.getElementById('sidebar');
+            const btn = document.querySelector('.mobile-menu-btn');
+            if (!sidebar.contains(e.target) && !btn.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
+        });
+
+        // Category toggle
+        function toggleCategory(header) {
+            header.classList.toggle('collapsed');
+        }
+
+        // Skill detail toggle
+        function toggleSkillDetail(card) {
+            card.classList.toggle('expanded');
+        }
+
+        // Copy to clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Copied to clipboard');
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        // Search functionality
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const stats = document.getElementById('searchStats');
+            
+            if (!query) {
+                document.querySelectorAll('.hidden').forEach(el => el.classList.remove('hidden'));
+                document.querySelectorAll('.highlight').forEach(el => {
+                    el.outerHTML = el.innerHTML;
+                });
+                stats.textContent = '';
+                return;
+            }
+
+            let matchCount = 0;
+            
+            // Search in memory items
+            document.querySelectorAll('.memory-item-compact').forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    item.classList.remove('hidden');
+                    highlightText(item, query);
+                    matchCount++;
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+
+            // Search in skill cards
+            document.querySelectorAll('.skill-card').forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    card.classList.remove('hidden');
+                    matchCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            // Search in API items
+            document.querySelectorAll('.api-item').forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    item.classList.remove('hidden');
+                    matchCount++;
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+
+            stats.textContent = matchCount + ' results';
+        }
+
+        function highlightText(element, query) {
+            const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
+            const textNodes = [];
+            let node;
+            while (node = walker.nextNode()) {
+                if (node.nodeValue.toLowerCase().includes(query)) {
+                    textNodes.push(node);
+                }
+            }
+            
+            textNodes.forEach(node => {
+                const span = document.createElement('span');
+                span.className = 'highlight';
+                const regex = new RegExp('(' + query + ')', 'gi');
+                span.innerHTML = node.nodeValue.replace(regex, '<span class="highlight">$1</span>');
+                node.parentNode.replaceChild(span, node);
+            });
+        }
+    </script>
+</body>
+</html>
