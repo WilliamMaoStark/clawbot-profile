@@ -1135,12 +1135,75 @@ function generateCSS() {
             margin-bottom: 1.5rem;
         }
 
+        .dashboard-stats-row {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-stats-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .dashboard-card {
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             border-radius: var(--radius-lg);
             padding: 1.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-card {
+                padding: 1rem;
+            }
+        }
+
+        .dashboard-card-wide {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-card-wide {
+                grid-column: span 1;
+            }
+        }
+
+        .dashboard-stat-card {
+            text-align: center;
+        }
+
+        .dashboard-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-stat-value {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+
+        .dashboard-stat-subtitle {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .dashboard-stat-status {
+            font-size: 0.7rem;
+            margin-top: 0.25rem;
+        }
+
+        .dashboard-stat-status.online {
+            color: var(--p2-color);
         }
 
         .dashboard-card-header {
@@ -1160,6 +1223,7 @@ function generateCSS() {
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
         }
 
         .dashboard-card-icon svg {
@@ -1174,39 +1238,10 @@ function generateCSS() {
             color: var(--text-primary);
         }
 
-        .dashboard-metric {
-            display: flex;
-            align-items: baseline;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .dashboard-metric-value {
-            font-size: 2rem;
-            font-weight: 600;
-            color: var(--accent-cyan);
-        }
-
-        .dashboard-metric-label {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-
-        .dashboard-metric-change {
-            font-size: 0.75rem;
-            padding: 2px 6px;
-            border-radius: var(--radius-sm);
+        .dashboard-card-badge {
             margin-left: auto;
-        }
-
-        .dashboard-metric-change.positive {
-            background: rgba(112, 160, 128, 0.15);
-            color: var(--p2-color);
-        }
-
-        .dashboard-metric-change.negative {
-            background: rgba(176, 112, 112, 0.15);
-            color: var(--p0-color);
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
         }
 
         .dashboard-list {
@@ -1226,10 +1261,23 @@ function generateCSS() {
             font-size: 0.85rem;
         }
 
+        @media (max-width: 480px) {
+            .dashboard-list-item {
+                flex-wrap: wrap;
+                padding: 0.5rem;
+            }
+            
+            .dashboard-list-item-content {
+                min-width: 0;
+                flex: 1;
+            }
+        }
+
         .dashboard-list-item-icon {
             width: 8px;
             height: 8px;
             border-radius: 50%;
+            flex-shrink: 0;
         }
 
         .dashboard-list-item-icon.online {
@@ -1247,11 +1295,15 @@ function generateCSS() {
 
         .dashboard-list-item-content {
             flex: 1;
+            min-width: 0;
         }
 
         .dashboard-list-item-title {
             color: var(--text-primary);
             font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .dashboard-list-item-meta {
@@ -1259,12 +1311,53 @@ function generateCSS() {
             font-size: 0.75rem;
         }
 
+        .dashboard-list-item-badge {
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 9999px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .dashboard-list-item-badge.scheduled {
+            color: var(--p2-color);
+            background: rgba(112, 160, 128, 0.15);
+        }
+
+        .dashboard-list-item-badge.active {
+            color: var(--p2-color);
+            background: rgba(112, 160, 128, 0.15);
+        }
+
+        .dashboard-list-item-badge.standby {
+            color: var(--p1-color);
+            background: rgba(176, 160, 112, 0.15);
+        }
+
+        .dashboard-metric-row {
+            margin-bottom: 1rem;
+        }
+
+        .dashboard-metric-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .dashboard-metric-label-row span {
+            color: var(--text-secondary);
+        }
+
+        .dashboard-metric-value-small {
+            color: var(--accent-cyan);
+        }
+
         .dashboard-chart-bar {
             height: 6px;
             background: rgba(130, 150, 170, 0.1);
             border-radius: 3px;
             overflow: hidden;
-            margin-top: 0.5rem;
         }
 
         .dashboard-chart-bar-fill {
@@ -1287,6 +1380,14 @@ function generateCSS() {
             background: rgba(130, 150, 170, 0.03);
             border: 1px solid var(--glass-border);
             border-radius: var(--radius-md);
+            align-items: center;
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-activity-item {
+                padding: 0.5rem;
+                gap: 0.5rem;
+            }
         }
 
         .dashboard-activity-icon {
@@ -1308,12 +1409,16 @@ function generateCSS() {
 
         .dashboard-activity-content {
             flex: 1;
+            min-width: 0;
         }
 
         .dashboard-activity-title {
             font-size: 0.85rem;
             color: var(--text-primary);
             margin-bottom: 0.2rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .dashboard-activity-time {
@@ -1322,48 +1427,71 @@ function generateCSS() {
             font-family: var(--font-mono);
         }
 
-        .dashboard-status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
-            padding: 2px 8px;
-            border-radius: 9999px;
-            font-size: 0.7rem;
-            font-weight: 500;
+        .dashboard-activity-status {
+            font-size: 0.65rem;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
-        .dashboard-status-badge.online {
-            background: rgba(112, 160, 128, 0.15);
+        .dashboard-activity-status.success {
             color: var(--p2-color);
         }
 
-        .dashboard-status-badge.offline {
-            background: rgba(176, 112, 112, 0.15);
-            color: var(--p0-color);
+        .dashboard-activity-status.system {
+            color: var(--text-tertiary);
         }
 
-        .dashboard-status-badge.maintenance {
-            background: rgba(176, 160, 112, 0.15);
-            color: var(--p1-color);
+        .dashboard-heatmap {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            margin-bottom: 1rem;
         }
 
-        .dashboard-status-dot {
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
+        .dashboard-heatmap-cell {
+            aspect-ratio: 1;
+            border-radius: 3px;
         }
 
-        .dashboard-status-badge.online .dashboard-status-dot {
-            background: var(--p2-color);
-            box-shadow: 0 0 4px var(--p2-color);
+        .dashboard-heatmap-legend {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
-        .dashboard-status-badge.offline .dashboard-status-dot {
-            background: var(--p0-color);
+        .dashboard-legend-left {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
         }
 
-        .dashboard-status-badge.maintenance .dashboard-status-dot {
-            background: var(--p1-color);
+        .dashboard-legend-left span {
+            color: var(--text-tertiary);
+        }
+
+        .dashboard-legend-cells {
+            display: flex;
+            gap: 2px;
+        }
+
+        .dashboard-legend-cell {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+        }
+
+        .dashboard-heatmap-total {
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-heatmap-total {
+                width: 100%;
+                text-align: right;
+            }
         }
     `;
 }
@@ -1385,30 +1513,30 @@ function generatePages(data) {
         <!-- Dashboard -->
         <div class="page" id="page-dashboard">
             <div class="page-header">
-                <h1 class="page-title">Dashboard</h1>
-                <p class="page-subtitle">Live system monitoring &amp; activity stream</p>
+                <h1 class="page-title">仪表盘</h1>
+                <p class="page-subtitle">系统监控与实时活动流</p>
             </div>
             
-            <div class="dashboard-grid" style="grid-template-columns: repeat(4, 1fr);">
-                <div class="dashboard-card" style="text-align: center;">
-                    <div style="font-size: 0.75rem; color: var(--text-tertiary); margin-bottom: 0.5rem;">Uptime</div>
-                    <div style="font-size: 1.75rem; font-weight: 600; color: var(--accent-cyan);">7d 12h</div>
-                    <div style="font-size: 0.7rem; color: var(--p2-color); margin-top: 0.25rem;">● Stable</div>
+            <div class="dashboard-grid dashboard-stats-row">
+                <div class="dashboard-card dashboard-stat-card">
+                    <div class="dashboard-stat-label">运行时长</div>
+                    <div class="dashboard-stat-value">7天12时</div>
+                    <div class="dashboard-stat-status online">● 稳定运行</div>
                 </div>
-                <div class="dashboard-card" style="text-align: center;">
-                    <div style="font-size: 0.75rem; color: var(--text-tertiary); margin-bottom: 0.5rem;">Tasks Today</div>
-                    <div style="font-size: 1.75rem; font-weight: 600; color: var(--accent-cyan);">12</div>
-                    <div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.25rem;">8 completed</div>
+                <div class="dashboard-card dashboard-stat-card">
+                    <div class="dashboard-stat-label">今日任务</div>
+                    <div class="dashboard-stat-value">12</div>
+                    <div class="dashboard-stat-subtitle">8 已完成</div>
                 </div>
-                <div class="dashboard-card" style="text-align: center;">
-                    <div style="font-size: 0.75rem; color: var(--text-tertiary); margin-bottom: 0.5rem;">Messages</div>
-                    <div style="font-size: 1.75rem; font-weight: 600; color: var(--accent-cyan);">47</div>
-                    <div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.25rem;">24h period</div>
+                <div class="dashboard-card dashboard-stat-card">
+                    <div class="dashboard-stat-label">消息数量</div>
+                    <div class="dashboard-stat-value">47</div>
+                    <div class="dashboard-stat-subtitle">24小时内</div>
                 </div>
-                <div class="dashboard-card" style="text-align: center;">
-                    <div style="font-size: 0.75rem; color: var(--text-tertiary); margin-bottom: 0.5rem;">Success Rate</div>
-                    <div style="font-size: 1.75rem; font-weight: 600; color: var(--accent-cyan);">96%</div>
-                    <div style="font-size: 0.7rem; color: var(--p2-color); margin-top: 0.25rem;">↑ 2% vs yesterday</div>
+                <div class="dashboard-card dashboard-stat-card">
+                    <div class="dashboard-stat-label">成功率</div>
+                    <div class="dashboard-stat-value">96%</div>
+                    <div class="dashboard-stat-status online">↑ 较昨日 +2%</div>
                 </div>
             </div>
 
@@ -1416,41 +1544,41 @@ function generatePages(data) {
                 <div class="dashboard-card">
                     <div class="dashboard-card-header">
                         <div class="dashboard-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-                        <span class="dashboard-card-title">Active Tasks</span>
-                        <span style="margin-left: auto; font-size: 0.7rem; color: var(--text-tertiary);">Auto-refresh</span>
+                        <span class="dashboard-card-title">活跃任务</span>
+                        <span class="dashboard-card-badge">自动刷新</span>
                     </div>
                     <div class="dashboard-list">
                         <div class="dashboard-list-item">
                             <span class="dashboard-list-item-icon online"></span>
                             <div class="dashboard-list-item-content">
-                                <div class="dashboard-list-item-title">Daily OpenClaw Cases</div>
-                                <div class="dashboard-list-item-meta">Cron • Next: 09:00 CST</div>
+                                <div class="dashboard-list-item-title">每日 OpenClaw 案例</div>
+                                <div class="dashboard-list-item-meta">定时任务 • 下次: 09:00</div>
                             </div>
-                            <span style="font-size: 0.65rem; color: var(--p2-color); background: rgba(112, 160, 128, 0.15); padding: 2px 6px; border-radius: 9999px;">Scheduled</span>
+                            <span class="dashboard-list-item-badge scheduled">已计划</span>
                         </div>
                         <div class="dashboard-list-item">
                             <span class="dashboard-list-item-icon online"></span>
                             <div class="dashboard-list-item-content">
-                                <div class="dashboard-list-item-title">Profile Auto-sync</div>
-                                <div class="dashboard-list-item-meta">Cron • Next: 04:00 CST</div>
+                                <div class="dashboard-list-item-title">主页自动同步</div>
+                                <div class="dashboard-list-item-meta">定时任务 • 下次: 04:00</div>
                             </div>
-                            <span style="font-size: 0.65rem; color: var(--p2-color); background: rgba(112, 160, 128, 0.15); padding: 2px 6px; border-radius: 9999px;">Scheduled</span>
+                            <span class="dashboard-list-item-badge scheduled">已计划</span>
                         </div>
                         <div class="dashboard-list-item">
                             <span class="dashboard-list-item-icon online"></span>
                             <div class="dashboard-list-item-content">
-                                <div class="dashboard-list-item-title">Memory Janitor</div>
-                                <div class="dashboard-list-item-meta">Daemon • Last run: 04:00</div>
+                                <div class="dashboard-list-item-title">记忆归档服务</div>
+                                <div class="dashboard-list-item-meta">守护进程 • 上次: 04:00</div>
                             </div>
-                            <span style="font-size: 0.65rem; color: var(--p2-color); background: rgba(112, 160, 128, 0.15); padding: 2px 6px; border-radius: 9999px;">Active</span>
+                            <span class="dashboard-list-item-badge active">运行中</span>
                         </div>
                         <div class="dashboard-list-item">
                             <span class="dashboard-list-item-icon pending"></span>
                             <div class="dashboard-list-item-content">
-                                <div class="dashboard-list-item-title">Feishu Integration</div>
-                                <div class="dashboard-list-item-meta">WebSocket • Connected</div>
+                                <div class="dashboard-list-item-title">飞书集成</div>
+                                <div class="dashboard-list-item-meta">WebSocket • 已连接</div>
                             </div>
-                            <span style="font-size: 0.65rem; color: var(--p1-color); background: rgba(176, 160, 112, 0.15); padding: 2px 6px; border-radius: 9999px;">Standby</span>
+                            <span class="dashboard-list-item-badge standby">待机</span>
                         </div>
                     </div>
                 </div>
@@ -1458,39 +1586,39 @@ function generatePages(data) {
                 <div class="dashboard-card">
                     <div class="dashboard-card-header">
                         <div class="dashboard-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-                        <span class="dashboard-card-title">Performance</span>
+                        <span class="dashboard-card-title">性能指标</span>
                     </div>
-                    <div style="margin-bottom: 1rem;">
-                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem;">
-                            <span style="color: var(--text-secondary);">Response Time</span>
-                            <span style="color: var(--accent-cyan);">245ms avg</span>
+                    <div class="dashboard-metric-row">
+                        <div class="dashboard-metric-label-row">
+                            <span>响应时间</span>
+                            <span class="dashboard-metric-value-small">245ms 平均</span>
                         </div>
                         <div class="dashboard-chart-bar">
                             <div class="dashboard-chart-bar-fill" style="width: 35%"></div>
                         </div>
                     </div>
-                    <div style="margin-bottom: 1rem;">
-                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem;">
-                            <span style="color: var(--text-secondary);">Token Usage</span>
-                            <span style="color: var(--accent-cyan);">2.1M / 10M</span>
+                    <div class="dashboard-metric-row">
+                        <div class="dashboard-metric-label-row">
+                            <span>Token 用量</span>
+                            <span class="dashboard-metric-value-small">2.1M / 10M</span>
                         </div>
                         <div class="dashboard-chart-bar">
                             <div class="dashboard-chart-bar-fill" style="width: 21%"></div>
                         </div>
                     </div>
-                    <div style="margin-bottom: 1rem;">
-                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem;">
-                            <span style="color: var(--text-secondary);">Memory Usage</span>
-                            <span style="color: var(--accent-cyan);">127 MB</span>
+                    <div class="dashboard-metric-row">
+                        <div class="dashboard-metric-label-row">
+                            <span>内存使用</span>
+                            <span class="dashboard-metric-value-small">127 MB</span>
                         </div>
                         <div class="dashboard-chart-bar">
                             <div class="dashboard-chart-bar-fill" style="width: 15%"></div>
                         </div>
                     </div>
-                    <div>
-                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem;">
-                            <span style="color: var(--text-secondary);">API Quota</span>
-                            <span style="color: var(--accent-cyan);">85%</span>
+                    <div class="dashboard-metric-row">
+                        <div class="dashboard-metric-label-row">
+                            <span>API 配额</span>
+                            <span class="dashboard-metric-value-small">85%</span>
                         </div>
                         <div class="dashboard-chart-bar">
                             <div class="dashboard-chart-bar-fill" style="width: 85%"></div>
@@ -1498,68 +1626,68 @@ function generatePages(data) {
                     </div>
                 </div>
 
-                <div class="dashboard-card" style="grid-column: span 2;">
+                <div class="dashboard-card dashboard-card-wide">
                     <div class="dashboard-card-header">
                         <div class="dashboard-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-                        <span class="dashboard-card-title">Live Activity Stream</span>
-                        <span style="margin-left: auto; font-size: 0.7rem; color: var(--text-tertiary);">Real-time</span>
+                        <span class="dashboard-card-title">实时活动流</span>
+                        <span class="dashboard-card-badge">实时</span>
                     </div>
                     <div class="dashboard-activity">
                         <div class="dashboard-activity-item">
                             <div class="dashboard-activity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg></div>
                             <div class="dashboard-activity-content">
-                                <div class="dashboard-activity-title">Daily OpenClaw cases task completed</div>
-                                <div class="dashboard-activity-time">09:00 CST • 5 instances found</div>
+                                <div class="dashboard-activity-title">每日 OpenClaw 案例任务已完成</div>
+                                <div class="dashboard-activity-time">09:00 CST • 发现 5 个实例</div>
                             </div>
-                            <span style="font-size: 0.65rem; color: var(--p2-color);">Success</span>
+                            <span class="dashboard-activity-status success">成功</span>
                         </div>
                         <div class="dashboard-activity-item">
                             <div class="dashboard-activity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
                             <div class="dashboard-activity-content">
-                                <div class="dashboard-activity-title">Dashboard feature deployed</div>
+                                <div class="dashboard-activity-title">仪表盘功能已部署</div>
                                 <div class="dashboard-activity-time">09:57 CST • GitHub Pages</div>
                             </div>
-                            <span style="font-size: 0.65rem; color: var(--p2-color);">Deployed</span>
+                            <span class="dashboard-activity-status success">已部署</span>
                         </div>
                         <div class="dashboard-activity-item">
                             <div class="dashboard-activity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
                             <div class="dashboard-activity-content">
-                                <div class="dashboard-activity-title">Feishu writer skill v3.0 completed</div>
-                                <div class="dashboard-activity-time">04:05 CST • Line-by-line write fix</div>
+                                <div class="dashboard-activity-title">飞书文档工具 v3.0 完成</div>
+                                <div class="dashboard-activity-time">04:05 CST • 逐行写入修复</div>
                             </div>
-                            <span style="font-size: 0.65rem; color: var(--p2-color);">Completed</span>
+                            <span class="dashboard-activity-status success">已完成</span>
                         </div>
                         <div class="dashboard-activity-item">
                             <div class="dashboard-activity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
                             <div class="dashboard-activity-content">
-                                <div class="dashboard-activity-title">Memory auto-archived by janitor</div>
-                                <div class="dashboard-activity-time">04:00 CST • 3 P2 items archived</div>
+                                <div class="dashboard-activity-title">记忆自动归档完成</div>
+                                <div class="dashboard-activity-time">04:00 CST • 3 个 P2 项目已归档</div>
                             </div>
-                            <span style="font-size: 0.65rem; color: var(--text-tertiary);">System</span>
+                            <span class="dashboard-activity-status system">系统</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="dashboard-card" style="grid-column: span 2;">
+                <div class="dashboard-card dashboard-card-wide">
                     <div class="dashboard-card-header">
                         <div class="dashboard-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
-                        <span class="dashboard-card-title">Skill Usage (7 Days)</span>
+                        <span class="dashboard-card-title">技能使用热力图 (7天)</span>
                     </div>
-                    <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 1rem;">
-                        <div style="aspect-ratio: 1; border-radius: 3px; background: var(--accent-cyan);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.6);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.3);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(130, 150, 170, 0.1);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: var(--accent-cyan);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.3);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(130, 150, 170, 0.1);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.6);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.6);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.3);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: var(--accent-cyan);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.6);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.3);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(130, 150, 170, 0.1);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: var(--accent-cyan);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.6);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.3);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(130, 150, 170, 0.1);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: var(--accent-cyan);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.6);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.3);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(130, 150, 170, 0.1);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.6);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: var(--accent-cyan);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.3);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.6);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.6);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.3);"></div>
+                    <div class="dashboard-heatmap">
+                        <div class="dashboard-heatmap-cell" style="background: var(--accent-cyan);"></div><div class="dashboard-heatmap-cell" style="background: rgba(90, 154, 142, 0.6);"></div><div class="dashboard-heatmap-cell" style="background: rgba(90, 154, 142, 0.3);"></div><div class="dashboard-heatmap-cell" style="background: rgba(130, 150, 170, 0.1);"></div><div class="dashboard-heatmap-cell" style="background: var(--accent-cyan);"></div><div class="dashboard-heatmap-cell" style="background: rgba(90, 154, 142, 0.3);"></div><div class="dashboard-heatmap-cell" style="background: rgba(130, 150, 170, 0.1);"></div><div class="dashboard-heatmap-cell" style="background: rgba(90, 154, 142, 0.6);"></div><div class="dashboard-heatmap-cell" style="background: rgba(90, 154, 142, 0.6);"></div><div class="dashboard-heatmap-cell" style="background: rgba(90, 154, 142, 0.3);"></div><div class="dashboard-heatmap-cell" style="background: var(--accent-cyan);"></div><div class="dashboard-heatmap-cell" style="background: rgba(90, 154, 142, 0.6);"></div><div class="dashboard-heatmap-cell" style="background: rgba(90, 154, 142, 0.3);"></div><div class="dashboard-heatmap-cell" style="background: rgba(130, 150, 170, 0.1);"></div><div class="dashboard-heatmap-cell" style="background: var(--accent-cyan);"></div><div class="dashboard-heatmap-cell" style="background: rgba(90, 154, 142, 0.6);"></div><div class="dashboard-heatmap-cell" style="background: rgba(90, 154, 142, 0.3);"></div><div class="dashboard-heatmap-cell" style="background: rgba(130, 150, 170, 0.1);"></div><div class="dashboard-heatmap-cell" style="background: var(--accent-cyan);"></div><div class="dashboard-heatmap-cell" style="background: rgba(90, 154, 142, 0.6);"></div><div class="dashboard-heatmap-cell" style="background: rgba(90, 154, 142, 0.3);"></div><div class="dashboard-heatmap-cell" style="background: rgba(130, 150, 170, 0.1);"></div><div class="dashboard-heatmap-cell" style="background: rgba(90, 154, 142, 0.6);"></div><div class="dashboard-heatmap-cell" style="background: var(--accent-cyan);"></div><div class="dashboard-heatmap-cell" style="background: rgba(90, 154, 142, 0.3);"></div><div class="dashboard-heatmap-cell" style="background: rgba(90, 154, 142, 0.6);"></div><div class="dashboard-heatmap-cell" style="background: rgba(90, 154, 142, 0.6);"></div><div class="dashboard-heatmap-cell" style="background: rgba(90, 154, 142, 0.3);"></div>
                     </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem;">
-                        <div style="display: flex; gap: 1rem;">
-                            <span style="color: var(--text-tertiary);">Less</span>
-                            <div style="display: flex; gap: 2px;">
-                                <div style="width: 10px; height: 10px; background: rgba(130, 150, 170, 0.1); border-radius: 2px;"></div>
-                                <div style="width: 10px; height: 10px; background: rgba(90, 154, 142, 0.3); border-radius: 2px;"></div>
-                                <div style="width: 10px; height: 10px; background: rgba(90, 154, 142, 0.6); border-radius: 2px;"></div>
-                                <div style="width: 10px; height: 10px; background: var(--accent-cyan); border-radius: 2px;"></div>
+                    <div class="dashboard-heatmap-legend">
+                        <div class="dashboard-legend-left">
+                            <span>低频</span>
+                            <div class="dashboard-legend-cells">
+                                <div class="dashboard-legend-cell" style="background: rgba(130, 150, 170, 0.1);"></div>
+                                <div class="dashboard-legend-cell" style="background: rgba(90, 154, 142, 0.3);"></div>
+                                <div class="dashboard-legend-cell" style="background: rgba(90, 154, 142, 0.6);"></div>
+                                <div class="dashboard-legend-cell" style="background: var(--accent-cyan);"></div>
                             </div>
-                            <span style="color: var(--text-tertiary);">More</span>
+                            <span>高频</span>
                         </div>
-                        <span style="color: var(--text-secondary);">147 invocations this week</span>
+                        <span class="dashboard-heatmap-total">本周调用 147 次</span>
                     </div>
                 </div>
             </div>
