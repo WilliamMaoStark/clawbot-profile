@@ -55,7 +55,10 @@ const ICONS = {
     video: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg>',
     link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
     chevronDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>',
-    external: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>'
+    external: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>',
+    dashboard: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>',
+    activity: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>',
+    zap: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>'
 };
 
 // 技能数据 - 增加分类和频率
@@ -1123,6 +1126,245 @@ function generateCSS() {
         /* Hidden class for search */
         .hidden { display: none !important; }
         .highlight { background: rgba(90, 154, 142, 0.15); border-radius: 2px; }
+
+        /* Dashboard Styles */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .dashboard-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+        }
+
+        .dashboard-card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .dashboard-card-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(90, 154, 142, 0.1);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dashboard-card-icon svg {
+            width: 16px;
+            height: 16px;
+            color: var(--accent-cyan);
+        }
+
+        .dashboard-card-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .dashboard-metric {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-metric-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+
+        .dashboard-metric-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .dashboard-metric-change {
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            margin-left: auto;
+        }
+
+        .dashboard-metric-change.positive {
+            background: rgba(112, 160, 128, 0.15);
+            color: var(--p2-color);
+        }
+
+        .dashboard-metric-change.negative {
+            background: rgba(176, 112, 112, 0.15);
+            color: var(--p0-color);
+        }
+
+        .dashboard-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .dashboard-list-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 0.75rem;
+            background: rgba(130, 150, 170, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+        }
+
+        .dashboard-list-item-icon {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .dashboard-list-item-icon.online {
+            background: var(--p2-color);
+            box-shadow: 0 0 6px var(--p2-color);
+        }
+
+        .dashboard-list-item-icon.offline {
+            background: var(--p0-color);
+        }
+
+        .dashboard-list-item-icon.pending {
+            background: var(--p1-color);
+        }
+
+        .dashboard-list-item-content {
+            flex: 1;
+        }
+
+        .dashboard-list-item-title {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .dashboard-list-item-meta {
+            color: var(--text-tertiary);
+            font-size: 0.75rem;
+        }
+
+        .dashboard-chart-bar {
+            height: 6px;
+            background: rgba(130, 150, 170, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .dashboard-chart-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .dashboard-activity {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .dashboard-activity-item {
+            display: flex;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(130, 150, 170, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+        }
+
+        .dashboard-activity-icon {
+            width: 28px;
+            height: 28px;
+            background: rgba(90, 154, 142, 0.1);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .dashboard-activity-icon svg {
+            width: 14px;
+            height: 14px;
+            color: var(--accent-cyan);
+        }
+
+        .dashboard-activity-content {
+            flex: 1;
+        }
+
+        .dashboard-activity-title {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            margin-bottom: 0.2rem;
+        }
+
+        .dashboard-activity-time {
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            font-family: var(--font-mono);
+        }
+
+        .dashboard-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .dashboard-status-badge.online {
+            background: rgba(112, 160, 128, 0.15);
+            color: var(--p2-color);
+        }
+
+        .dashboard-status-badge.offline {
+            background: rgba(176, 112, 112, 0.15);
+            color: var(--p0-color);
+        }
+
+        .dashboard-status-badge.maintenance {
+            background: rgba(176, 160, 112, 0.15);
+            color: var(--p1-color);
+        }
+
+        .dashboard-status-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+        }
+
+        .dashboard-status-badge.online .dashboard-status-dot {
+            background: var(--p2-color);
+            box-shadow: 0 0 4px var(--p2-color);
+        }
+
+        .dashboard-status-badge.offline .dashboard-status-dot {
+            background: var(--p0-color);
+        }
+
+        .dashboard-status-badge.maintenance .dashboard-status-dot {
+            background: var(--p1-color);
+        }
     `;
 }
 
@@ -1140,6 +1382,22 @@ function generateNavItem(id, icon, label, badge, isActive = false) {
 
 function generatePages(data) {
     return `
+        <!-- Dashboard -->
+        <div class="page" id="page-dashboard">
+            <div class="page-header">
+                <h1 class="page-title">Dashboard</h1>
+                <p class="page-subtitle">System status and activity monitoring</p>
+            </div>
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <div class="dashboard-card-icon">'${ICONS.cpu}'</div>
+                        <span class="dashboard-card-title">System Status</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Overview -->
         <div class="page active" id="page-overview">
             <div class="page-header">
@@ -1284,6 +1542,7 @@ function generateHTML(data) {
             <nav class="nav-menu">
                 <div class="nav-section">
                     <div class="nav-section-title">Overview</div>
+                    ${generateNavItem('dashboard', 'dashboard', 'Dashboard', null)}
                     ${generateNavItem('overview', 'home', 'Home', null, true)}
                 </div>
 

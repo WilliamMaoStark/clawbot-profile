@@ -796,6 +796,245 @@
         /* Hidden class for search */
         .hidden { display: none !important; }
         .highlight { background: rgba(90, 154, 142, 0.15); border-radius: 2px; }
+
+        /* Dashboard Styles */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .dashboard-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+        }
+
+        .dashboard-card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .dashboard-card-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(90, 154, 142, 0.1);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dashboard-card-icon svg {
+            width: 16px;
+            height: 16px;
+            color: var(--accent-cyan);
+        }
+
+        .dashboard-card-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .dashboard-metric {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-metric-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+
+        .dashboard-metric-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .dashboard-metric-change {
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            margin-left: auto;
+        }
+
+        .dashboard-metric-change.positive {
+            background: rgba(112, 160, 128, 0.15);
+            color: var(--p2-color);
+        }
+
+        .dashboard-metric-change.negative {
+            background: rgba(176, 112, 112, 0.15);
+            color: var(--p0-color);
+        }
+
+        .dashboard-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .dashboard-list-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 0.75rem;
+            background: rgba(130, 150, 170, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+        }
+
+        .dashboard-list-item-icon {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .dashboard-list-item-icon.online {
+            background: var(--p2-color);
+            box-shadow: 0 0 6px var(--p2-color);
+        }
+
+        .dashboard-list-item-icon.offline {
+            background: var(--p0-color);
+        }
+
+        .dashboard-list-item-icon.pending {
+            background: var(--p1-color);
+        }
+
+        .dashboard-list-item-content {
+            flex: 1;
+        }
+
+        .dashboard-list-item-title {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .dashboard-list-item-meta {
+            color: var(--text-tertiary);
+            font-size: 0.75rem;
+        }
+
+        .dashboard-chart-bar {
+            height: 6px;
+            background: rgba(130, 150, 170, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .dashboard-chart-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .dashboard-activity {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .dashboard-activity-item {
+            display: flex;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(130, 150, 170, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+        }
+
+        .dashboard-activity-icon {
+            width: 28px;
+            height: 28px;
+            background: rgba(90, 154, 142, 0.1);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .dashboard-activity-icon svg {
+            width: 14px;
+            height: 14px;
+            color: var(--accent-cyan);
+        }
+
+        .dashboard-activity-content {
+            flex: 1;
+        }
+
+        .dashboard-activity-title {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            margin-bottom: 0.2rem;
+        }
+
+        .dashboard-activity-time {
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            font-family: var(--font-mono);
+        }
+
+        .dashboard-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .dashboard-status-badge.online {
+            background: rgba(112, 160, 128, 0.15);
+            color: var(--p2-color);
+        }
+
+        .dashboard-status-badge.offline {
+            background: rgba(176, 112, 112, 0.15);
+            color: var(--p0-color);
+        }
+
+        .dashboard-status-badge.maintenance {
+            background: rgba(176, 160, 112, 0.15);
+            color: var(--p1-color);
+        }
+
+        .dashboard-status-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+        }
+
+        .dashboard-status-badge.online .dashboard-status-dot {
+            background: var(--p2-color);
+            box-shadow: 0 0 4px var(--p2-color);
+        }
+
+        .dashboard-status-badge.offline .dashboard-status-dot {
+            background: var(--p0-color);
+        }
+
+        .dashboard-status-badge.maintenance .dashboard-status-dot {
+            background: var(--p1-color);
+        }
     </style>
 </head>
 <body>
@@ -803,7 +1042,7 @@
     <div class="bg-grid"></div>
 
     <div class="update-banner">
-        <span>Last updated: 2026/02/14 19:37</span>
+        <span>Last updated: 2026/02/16 09:39</span>
         <div style="display: flex; align-items: center; gap: 0.75rem;">
             <span id="pendingChanges" style="color: var(--text-tertiary); font-size: 0.7rem; display: none;"></span>
             <button id="syncBtn" class="sync-btn" onclick="syncChanges()" disabled>
@@ -838,6 +1077,13 @@
                 <div class="nav-section">
                     <div class="nav-section-title">Overview</div>
                     
+        <div class="nav-item " onclick="showPage('dashboard')" data-page="dashboard">
+            <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg></span>
+            <span>Dashboard</span>
+            
+        </div>
+    
+                    
         <div class="nav-item active" onclick="showPage('overview')" data-page="overview">
             <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
             <span>Home</span>
@@ -852,14 +1098,14 @@
         <div class="nav-item " onclick="showPage('memory-p0')" data-page="memory-p0">
             <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg></span>
             <span>Core Identity</span>
-            <span class="nav-badge">12</span>
+            <span class="nav-badge">13</span>
         </div>
     
                     
         <div class="nav-item " onclick="showPage('memory-p1')" data-page="memory-p1">
             <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>
             <span>Active Projects</span>
-            <span class="nav-badge">10</span>
+            <span class="nav-badge">11</span>
         </div>
     
                     
@@ -909,6 +1155,22 @@
             </div>
 
             
+        <!-- Dashboard -->
+        <div class="page" id="page-dashboard">
+            <div class="page-header">
+                <h1 class="page-title">Dashboard</h1>
+                <p class="page-subtitle">System status and activity monitoring</p>
+            </div>
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <div class="dashboard-card-icon">'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>'</div>
+                        <span class="dashboard-card-title">System Status</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Overview -->
         <div class="page active" id="page-overview">
             <div class="page-header">
@@ -919,11 +1181,11 @@
             <div class="glass-card">
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-value">12</div>
+                        <div class="stat-value">13</div>
                         <div class="stat-label">P0 Core Rules</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">10</div>
+                        <div class="stat-value">11</div>
                         <div class="stat-label">P1 Projects</div>
                     </div>
                     <div class="stat-card">
@@ -954,7 +1216,7 @@
             <div class="category-header" onclick="toggleCategory(this)">
                 <span class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
                 <span class="category-name">核心身份</span>
-                <span class="category-count">6</span>
+                <span class="category-count">7</span>
                 <span class="category-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></span>
             </div>
             <div class="category-content">
@@ -998,15 +1260,15 @@
                             <span class="priority-badge badge-p0">P0</span>
                             
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('P0', 2, '安全规则：外部操作（邮件/推文/公开发帖）前必须确认', 12)" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('P0', 2, '技术方案必须分析利弊：提供决策依据供用户判断，这是核心规则', 12)" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 2, '安全规则：外部操作（邮件/推文/公开发帖）前必须确认', 12)" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 2, '技术方案必须分析利弊：提供决策依据供用户判断，这是核心规则', 12)" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
                         </div>
-                        <div class="memory-text">安全规则：外部操作（邮件/推文/公开发帖）前必须确认</div>
+                        <div class="memory-text">技术方案必须分析利弊：提供决策依据供用户判断，这是核心规则</div>
                         <div class="memory-meta">永久</div>
                     </div>
                 
@@ -1015,10 +1277,27 @@
                             <span class="priority-badge badge-p0">P0</span>
                             
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('P0', 3, '真钱操作 = 正确性 > 速度（涉及交易/支付时，用完全相同的已测试代码）', 13)" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('P0', 3, '安全规则：外部操作（邮件/推文/公开发帖）前必须确认', 13)" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 3, '真钱操作 = 正确性 > 速度（涉及交易/支付时，用完全相同的已测试代码）', 13)" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 3, '安全规则：外部操作（邮件/推文/公开发帖）前必须确认', 13)" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">安全规则：外部操作（邮件/推文/公开发帖）前必须确认</div>
+                        <div class="memory-meta">永久</div>
+                    </div>
+                
+                    <div class="memory-item-compact" data-id="P0-4" data-line-index="14">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p0">P0</span>
+                            
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P0', 4, '真钱操作 = 正确性 > 速度（涉及交易/支付时，用完全相同的已测试代码）', 14)" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 4, '真钱操作 = 正确性 > 速度（涉及交易/支付时，用完全相同的已测试代码）', 14)" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
@@ -1027,15 +1306,15 @@
                         <div class="memory-meta">永久</div>
                     </div>
                 
-                    <div class="memory-item-compact" data-id="P0-4" data-line-index="14">
+                    <div class="memory-item-compact" data-id="P0-5" data-line-index="15">
                         <div class="memory-badges">
                             <span class="priority-badge badge-p0">P0</span>
                             <span class="tag-small">自动化</span>
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('P0', 4, '自动化两套系统：禁用/检查自动化时，查 system crontab + OpenClaw cron', 14)" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('P0', 5, '自动化两套系统：禁用/检查自动化时，查 system crontab + OpenClaw cron', 15)" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 4, '自动化两套系统：禁用/检查自动化时，查 system crontab + OpenClaw cron', 14)" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 5, '自动化两套系统：禁用/检查自动化时，查 system crontab + OpenClaw cron', 15)" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
@@ -1044,15 +1323,15 @@
                         <div class="memory-meta">永久</div>
                     </div>
                 
-                    <div class="memory-item-compact" data-id="P0-5" data-line-index="15">
+                    <div class="memory-item-compact" data-id="P0-6" data-line-index="16">
                         <div class="memory-badges">
                             <span class="priority-badge badge-p0">P0</span>
                             
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('P0', 5, '进程隔离：长期运行的 bot 用 setsid，否则会被 session cleanup 杀掉', 15)" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('P0', 6, '进程隔离：长期运行的 bot 用 setsid，否则会被 session cleanup 杀掉', 16)" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 5, '进程隔离：长期运行的 bot 用 setsid，否则会被 session cleanup 杀掉', 15)" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 6, '进程隔离：长期运行的 bot 用 setsid，否则会被 session cleanup 杀掉', 16)" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
@@ -1073,15 +1352,15 @@
             </div>
             <div class="category-content">
                 
-                    <div class="memory-item-compact" data-id="P0-0" data-line-index="21">
+                    <div class="memory-item-compact" data-id="P0-0" data-line-index="22">
                         <div class="memory-badges">
                             <span class="priority-badge badge-p0">P0</span>
                             
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('P0', 0, '时区：Asia/Shanghai', 21)" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('P0', 0, '时区：Asia/Shanghai', 22)" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 0, '时区：Asia/Shanghai', 21)" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 0, '时区：Asia/Shanghai', 22)" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
@@ -1090,15 +1369,15 @@
                         <div class="memory-meta">永久</div>
                     </div>
                 
-                    <div class="memory-item-compact" data-id="P0-1" data-line-index="22">
+                    <div class="memory-item-compact" data-id="P0-1" data-line-index="23">
                         <div class="memory-badges">
                             <span class="priority-badge badge-p0">P0</span>
                             
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('P0', 1, '网络代理：http://127.0.0.1:7897（ClawHub/外部工具必需）', 22)" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('P0', 1, '网络代理：http://127.0.0.1:7897（ClawHub/外部工具必需）', 23)" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 1, '网络代理：http://127.0.0.1:7897（ClawHub/外部工具必需）', 22)" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 1, '网络代理：http://127.0.0.1:7897（ClawHub/外部工具必需）', 23)" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
@@ -1119,15 +1398,15 @@
             </div>
             <div class="category-content">
                 
-                    <div class="memory-item-compact" data-id="P0-0" data-line-index="30">
+                    <div class="memory-item-compact" data-id="P0-0" data-line-index="31">
                         <div class="memory-badges">
                             <span class="priority-badge badge-p0">P0</span>
                             <span class="tag-small">研究</span>
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('P0', 0, 'Parallel API - 深度研究用（API Key已配置）', 30)" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('P0', 0, 'Parallel API - 深度研究用（API Key已配置）', 31)" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 0, 'Parallel API - 深度研究用（API Key已配置）', 30)" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 0, 'Parallel API - 深度研究用（API Key已配置）', 31)" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
@@ -1136,15 +1415,15 @@
                         <div class="memory-meta">永久</div>
                     </div>
                 
-                    <div class="memory-item-compact" data-id="P0-1" data-line-index="31">
+                    <div class="memory-item-compact" data-id="P0-1" data-line-index="32">
                         <div class="memory-badges">
                             <span class="priority-badge badge-p0">P0</span>
                             
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('P0', 1, 'yt-dlp - YouTube下载/搜索', 31)" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('P0', 1, 'yt-dlp - YouTube下载/搜索', 32)" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 1, 'yt-dlp - YouTube下载/搜索', 31)" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 1, 'yt-dlp - YouTube下载/搜索', 32)" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
@@ -1153,15 +1432,15 @@
                         <div class="memory-meta">永久</div>
                     </div>
                 
-                    <div class="memory-item-compact" data-id="P0-2" data-line-index="32">
+                    <div class="memory-item-compact" data-id="P0-2" data-line-index="33">
                         <div class="memory-badges">
                             <span class="priority-badge badge-p0">P0</span>
                             <span class="tag-small">DevOps</span>
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('P0', 2, 'gh CLI - GitHub操作', 32)" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('P0', 2, 'gh CLI - GitHub操作', 33)" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 2, 'gh CLI - GitHub操作', 32)" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 2, 'gh CLI - GitHub操作', 33)" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
@@ -1170,15 +1449,15 @@
                         <div class="memory-meta">永久</div>
                     </div>
                 
-                    <div class="memory-item-compact" data-id="P0-3" data-line-index="33">
+                    <div class="memory-item-compact" data-id="P0-3" data-line-index="34">
                         <div class="memory-badges">
                             <span class="priority-badge badge-p0">P0</span>
                             
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('P0', 3, 'clawhub - 技能市场（需要代理）', 33)" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('P0', 3, 'clawhub - 技能市场（需要代理）', 34)" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 3, 'clawhub - 技能市场（需要代理）', 33)" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('P0', 3, 'clawhub - 技能市场（需要代理）', 34)" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
@@ -1210,15 +1489,15 @@
             </div>
             <div class="category-content">
                 
-                    <div class="memory-item-compact" data-id="P1-0" data-line-index="23">
+                    <div class="memory-item-compact" data-id="P1-0" data-line-index="24">
                         <div class="memory-badges">
                             <span class="priority-badge badge-p1">P1</span>
                             <span class="tag-small">硬件</span><span class="tag-small">研究</span>
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('P1', 0, '港区定位系统项目 - 成本<4500元，已完成可行性研究', 23)" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('P1', 0, '港区定位系统项目 - 成本<4500元，已完成可行性研究', 24)" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 0, '港区定位系统项目 - 成本<4500元，已完成可行性研究', 23)" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 0, '港区定位系统项目 - 成本<4500元，已完成可行性研究', 24)" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
@@ -1227,15 +1506,15 @@
                         <div class="memory-meta">2026-02-11</div>
                     </div>
                 
-                    <div class="memory-item-compact" data-id="P1-1" data-line-index="24">
+                    <div class="memory-item-compact" data-id="P1-1" data-line-index="25">
                         <div class="memory-badges">
                             <span class="priority-badge badge-p1">P1</span>
                             <span class="tag-small">研究</span>
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('P1', 1, '货轮风帆系统调研 - 已完成软件算法与市场分析', 24)" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('P1', 1, '货轮风帆系统调研 - 已完成软件算法与市场分析', 25)" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 1, '货轮风帆系统调研 - 已完成软件算法与市场分析', 24)" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 1, '货轮风帆系统调研 - 已完成软件算法与市场分析', 25)" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
@@ -1256,15 +1535,15 @@
             </div>
             <div class="category-content">
                 
-                    <div class="memory-item-compact" data-id="P1-0" data-line-index="34">
+                    <div class="memory-item-compact" data-id="P1-0" data-line-index="35">
                         <div class="memory-badges">
                             <span class="priority-badge badge-p1">P1</span>
                             
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('P1', 0, 'project-scaffolder - 项目脚手架', 34)" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('P1', 0, 'project-scaffolder - 项目脚手架', 35)" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 0, 'project-scaffolder - 项目脚手架', 34)" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 0, 'project-scaffolder - 项目脚手架', 35)" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
@@ -1273,15 +1552,15 @@
                         <div class="memory-meta">2026-02-11</div>
                     </div>
                 
-                    <div class="memory-item-compact" data-id="P1-1" data-line-index="35">
+                    <div class="memory-item-compact" data-id="P1-1" data-line-index="36">
                         <div class="memory-badges">
                             <span class="priority-badge badge-p1">P1</span>
                             
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('P1', 1, 'pdf-generator - Markdown转PDF', 35)" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('P1', 1, 'pdf-generator - Markdown转PDF', 36)" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 1, 'pdf-generator - Markdown转PDF', 35)" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 1, 'pdf-generator - Markdown转PDF', 36)" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
@@ -1290,15 +1569,15 @@
                         <div class="memory-meta">2026-02-11</div>
                     </div>
                 
-                    <div class="memory-item-compact" data-id="P1-2" data-line-index="36">
+                    <div class="memory-item-compact" data-id="P1-2" data-line-index="37">
                         <div class="memory-badges">
                             <span class="priority-badge badge-p1">P1</span>
                             
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('P1', 2, 'diagram-generator - Mermaid转图表', 36)" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('P1', 2, 'diagram-generator - Mermaid转图表', 37)" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 2, 'diagram-generator - Mermaid转图表', 36)" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 2, 'diagram-generator - Mermaid转图表', 37)" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
@@ -1314,54 +1593,71 @@
             <div class="category-header" onclick="toggleCategory(this)">
                 <span class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
                 <span class="category-name">活跃配置</span>
-                <span class="category-count">5</span>
+                <span class="category-count">6</span>
                 <span class="category-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg></span>
             </div>
             <div class="category-content">
                 
-                    <div class="memory-item-compact" data-id="P1-0" data-line-index="42">
+                    <div class="memory-item-compact" data-id="P1-0" data-line-index="43">
                         <div class="memory-badges">
                             <span class="priority-badge badge-p1">P1</span>
                             <span class="tag-small">自动化</span>
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('P1', 0, '每日OpenClaw案例跟进任务 - 每日9:00自动执行，使用免费工具搜索YouTube/ClawHub最新用例，必须包含视频/技能链接', 42)" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('P1', 0, '每日OpenClaw案例跟进任务 - 每日9:00自动执行', 43)" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 0, '每日OpenClaw案例跟进任务 - 每日9:00自动执行，使用免费工具搜索YouTube/ClawHub最新用例，必须包含视频/技能链接', 42)" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 0, '每日OpenClaw案例跟进任务 - 每日9:00自动执行', 43)" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
                         </div>
-                        <div class="memory-text">每日OpenClaw案例跟进任务 - 每日9:00自动执行，使用免费工具搜索YouTube/ClawHub最新用例，必须包含视频/技能链接</div>
+                        <div class="memory-text">每日OpenClaw案例跟进任务 - 每日9:00自动执行</div>
                         <div class="memory-meta">2026-02-11</div>
                     </div>
                 
-                    <div class="memory-item-compact" data-id="P1-1" data-line-index="43">
+                    <div class="memory-item-compact" data-id="P1-1" data-line-index="44">
                         <div class="memory-badges">
                             <span class="priority-badge badge-p1">P1</span>
                             <span class="tag-small">自动化</span>
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('P1', 1, 'ClawBot Profile自动同步 - 每日4:00自动从MEMORY.md/TOOLS.md生成个人资料网页', 43)" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('P1', 1, 'ClawBot Profile自动同步 - 每日4:00自动生成个人资料网页', 44)" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 1, 'ClawBot Profile自动同步 - 每日4:00自动从MEMORY.md/TOOLS.md生成个人资料网页', 43)" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 1, 'ClawBot Profile自动同步 - 每日4:00自动生成个人资料网页', 44)" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
                         </div>
-                        <div class="memory-text">ClawBot Profile自动同步 - 每日4:00自动从MEMORY.md/TOOLS.md生成个人资料网页</div>
+                        <div class="memory-text">ClawBot Profile自动同步 - 每日4:00自动生成个人资料网页</div>
                         <div class="memory-meta">2026-02-14</div>
                     </div>
                 
-                    <div class="memory-item-compact" data-id="P1-2" data-line-index="44">
+                    <div class="memory-item-compact" data-id="P1-2" data-line-index="45">
                         <div class="memory-badges">
                             <span class="priority-badge badge-p1">P1</span>
                             <span class="tag-small">自动化</span>
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('P1', 2, 'Cron任务: daily-openclaw-cases（每日9:00执行）', 44)" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('P1', 2, 'OpenClaw案例任务升级 - 启用Parallel API深度搜索（质量优先）', 45)" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 2, 'Cron任务: daily-openclaw-cases（每日9:00执行）', 44)" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 2, 'OpenClaw案例任务升级 - 启用Parallel API深度搜索（质量优先）', 45)" title="删除">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="memory-text">OpenClaw案例任务升级 - 启用Parallel API深度搜索（质量优先）</div>
+                        <div class="memory-meta">2026-02-15</div>
+                    </div>
+                
+                    <div class="memory-item-compact" data-id="P1-3" data-line-index="46">
+                        <div class="memory-badges">
+                            <span class="priority-badge badge-p1">P1</span>
+                            <span class="tag-small">自动化</span>
+                            <div class="item-actions">
+                                <button class="action-btn edit-btn" onclick="editMemory('P1', 3, 'Cron任务: daily-openclaw-cases（每日9:00执行）', 46)" title="编辑">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 3, 'Cron任务: daily-openclaw-cases（每日9:00执行）', 46)" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
@@ -1370,15 +1666,15 @@
                         <div class="memory-meta">2026-02-11</div>
                     </div>
                 
-                    <div class="memory-item-compact" data-id="P1-3" data-line-index="45">
+                    <div class="memory-item-compact" data-id="P1-4" data-line-index="47">
                         <div class="memory-badges">
                             <span class="priority-badge badge-p1">P1</span>
                             <span class="tag-small">自动化</span><span class="tag-small">DevOps</span>
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('P1', 3, '记忆系统: 已部署P0/P1/P2自动归档', 45)" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('P1', 4, '记忆系统: 已部署P0/P1/P2自动归档', 47)" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 3, '记忆系统: 已部署P0/P1/P2自动归档', 45)" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 4, '记忆系统: 已部署P0/P1/P2自动归档', 47)" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
@@ -1387,15 +1683,15 @@
                         <div class="memory-meta">2026-02-11</div>
                     </div>
                 
-                    <div class="memory-item-compact" data-id="P1-4" data-line-index="46">
+                    <div class="memory-item-compact" data-id="P1-5" data-line-index="48">
                         <div class="memory-badges">
                             <span class="priority-badge badge-p1">P1</span>
                             <span class="tag-small">自动化</span>
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('P1', 4, '定时任务状态: 正常运行，首次执行成功', 46)" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('P1', 5, '定时任务状态: 正常运行，首次执行成功', 48)" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 4, '定时任务状态: 正常运行，首次执行成功', 46)" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('P1', 5, '定时任务状态: 正常运行，首次执行成功', 48)" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
@@ -1427,15 +1723,15 @@
             </div>
             <div class="category-content">
                 
-                    <div class="memory-item-compact" data-id="P2-0" data-line-index="52">
+                    <div class="memory-item-compact" data-id="P2-0" data-line-index="54">
                         <div class="memory-badges">
                             <span class="priority-badge badge-p2">P2</span>
                             
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('P2', 0, '调试Parallel API调用路径（已完成）', 52)" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('P2', 0, '调试Parallel API调用路径（已完成）', 54)" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('P2', 0, '调试Parallel API调用路径（已完成）', 52)" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('P2', 0, '调试Parallel API调用路径（已完成）', 54)" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
@@ -1444,15 +1740,15 @@
                         <div class="memory-meta">2026-02-11</div>
                     </div>
                 
-                    <div class="memory-item-compact" data-id="P2-1" data-line-index="53">
+                    <div class="memory-item-compact" data-id="P2-1" data-line-index="55">
                         <div class="memory-badges">
                             <span class="priority-badge badge-p2">P2</span>
                             
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('P2', 1, 'PowerPoint生成测试（v1失败，v2修复成功）', 53)" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('P2', 1, 'PowerPoint生成测试（v1失败，v2修复成功）', 55)" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('P2', 1, 'PowerPoint生成测试（v1失败，v2修复成功）', 53)" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('P2', 1, 'PowerPoint生成测试（v1失败，v2修复成功）', 55)" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
@@ -1461,15 +1757,15 @@
                         <div class="memory-meta">2026-02-11</div>
                     </div>
                 
-                    <div class="memory-item-compact" data-id="P2-2" data-line-index="54">
+                    <div class="memory-item-compact" data-id="P2-2" data-line-index="56">
                         <div class="memory-badges">
                             <span class="priority-badge badge-p2">P2</span>
                             <span class="tag-small">DevOps</span>
                             <div class="item-actions">
-                                <button class="action-btn edit-btn" onclick="editMemory('P2', 2, '记忆系统分析完成，开始部署优化', 54)" title="编辑">
+                                <button class="action-btn edit-btn" onclick="editMemory('P2', 2, '记忆系统分析完成，开始部署优化', 56)" title="编辑">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                 </button>
-                                <button class="action-btn delete-btn" onclick="deleteItem('P2', 2, '记忆系统分析完成，开始部署优化', 54)" title="删除">
+                                <button class="action-btn delete-btn" onclick="deleteItem('P2', 2, '记忆系统分析完成，开始部署优化', 56)" title="删除">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 </button>
                             </div>
