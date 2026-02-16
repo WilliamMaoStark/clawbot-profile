@@ -1712,15 +1712,15 @@ function generatePages(data) {
                     </div>
                     <div class="stat-card">
                         <div class="stat-value">${data.memories.P2.length}</div>
-                        <div class="stat-label">P2 Records</div>
+                        <div class="stat-label">P2 临时记录</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-value">${SKILLS_DATA.length}</div>
-                        <div class="stat-label">Skills</div>
+                        <div class="stat-label">技能</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-value">${parseAPIs().filter(a => a.status === 'active').length}/${parseAPIs().length}</div>
-                        <div class="stat-label">APIs Ready</div>
+                        <div class="stat-label">API 就绪</div>
                     </div>
                 </div>
             </div>
@@ -1729,8 +1729,8 @@ function generatePages(data) {
         <!-- P0 Memory -->
         <div class="page" id="page-memory-p0">
             <div class="page-header">
-                <h1 class="page-title">Core Identity (P0)</h1>
-                <p class="page-subtitle">Permanent rules and identity definitions</p>
+                <h1 class="page-title">核心身份 (P0)</h1>
+                <p class="page-subtitle">永久规则与身份定义</p>
             </div>
             <div class="memory-container">
                 ${generateMemoryByCategory(data.memories, 'P0')}
@@ -1740,8 +1740,8 @@ function generatePages(data) {
         <!-- P1 Memory -->
         <div class="page" id="page-memory-p1">
             <div class="page-header">
-                <h1 class="page-title">Active Projects (P1)</h1>
-                <p class="page-subtitle">90-day TTL current projects</p>
+                <h1 class="page-title">活跃项目 (P1)</h1>
+                <p class="page-subtitle">90天有效期当前项目</p>
             </div>
             <div class="memory-container">
                 ${generateMemoryByCategory(data.memories, 'P1')}
@@ -1751,8 +1751,8 @@ function generatePages(data) {
         <!-- P2 Memory -->
         <div class="page" id="page-memory-p2">
             <div class="page-header">
-                <h1 class="page-title">Temp Records (P2)</h1>
-                <p class="page-subtitle">30-day TTL debug records</p>
+                <h1 class="page-title">临时记录 (P2)</h1>
+                <p class="page-subtitle">30天有效期调试记录</p>
             </div>
             <div class="memory-container">
                 ${generateMemoryByCategory(data.memories, 'P2')}
@@ -1762,8 +1762,8 @@ function generatePages(data) {
         <!-- Skills -->
         <div class="page" id="page-skills">
             <div class="page-header">
-                <h1 class="page-title">Skills Matrix</h1>
-                <p class="page-subtitle">${SKILLS_DATA.length} installed skills by frequency</p>
+                <h1 class="page-title">技能矩阵</h1>
+                <p class="page-subtitle">${SKILLS_DATA.length} 个已安装技能按使用频率分类</p>
             </div>
             ${generateSkillCards()}
         </div>
@@ -1771,8 +1771,8 @@ function generatePages(data) {
         <!-- API -->
         <div class="page" id="page-api">
             <div class="page-header">
-                <h1 class="page-title">API Configuration</h1>
-                <p class="page-subtitle">External service API keys status</p>
+                <h1 class="page-title">API 配置</h1>
+                <p class="page-subtitle">外部服务 API 密钥状态</p>
             </div>
             <div class="glass-card">
                 ${generateAPIList()}
@@ -1803,7 +1803,7 @@ function generateHTML(data) {
     <div class="bg-grid"></div>
 
     <div class="update-banner">
-        <span>Last updated: ${updatedAt}</span>
+        <span>最后更新: ${updatedAt}</span>
         <div style="display: flex; align-items: center; gap: 0.75rem;">
             <span id="pendingChanges" style="color: var(--text-tertiary); font-size: 0.7rem; display: none;"></span>
             <button id="syncBtn" class="sync-btn" onclick="syncChanges()" disabled>
@@ -1836,22 +1836,22 @@ function generateHTML(data) {
 
             <nav class="nav-menu">
                 <div class="nav-section">
-                    <div class="nav-section-title">Overview</div>
-                    ${generateNavItem('dashboard', 'dashboard', 'Dashboard', null)}
-                    ${generateNavItem('overview', 'home', 'Home', null, true)}
+                    <div class="nav-section-title">概览</div>
+                    ${generateNavItem('dashboard', 'dashboard', '仪表盘', null)}
+                    ${generateNavItem('overview', 'home', '主页', null, true)}
                 </div>
 
                 <div class="nav-section">
-                    <div class="nav-section-title">Memory</div>
-                    ${generateNavItem('memory-p0', 'brain', 'Core Identity', data.memories.P0.length)}
-                    ${generateNavItem('memory-p1', 'layers', 'Active Projects', data.memories.P1.length)}
-                    ${generateNavItem('memory-p2', 'clock', 'Temp Records', data.memories.P2.length)}
+                    <div class="nav-section-title">记忆</div>
+                    ${generateNavItem('memory-p0', 'brain', '核心身份', data.memories.P0.length)}
+                    ${generateNavItem('memory-p1', 'layers', '活跃项目', data.memories.P1.length)}
+                    ${generateNavItem('memory-p2', 'clock', '临时记录', data.memories.P2.length)}
                 </div>
 
                 <div class="nav-section">
-                    <div class="nav-section-title">Capabilities</div>
-                    ${generateNavItem('skills', 'skills', 'Skills', SKILLS_DATA.length)}
-                    ${generateNavItem('api', 'api', 'API Keys', parseAPIs().length)}
+                    <div class="nav-section-title">能力</div>
+                    ${generateNavItem('skills', 'skills', '技能', SKILLS_DATA.length)}
+                    ${generateNavItem('api', 'api', 'API 密钥', parseAPIs().length)}
                 </div>
             </nav>
 
@@ -1868,7 +1868,7 @@ function generateHTML(data) {
             <div class="search-container">
                 <div class="search-box">
                     ${ICONS.search}
-                    <input type="text" class="search-input" id="searchInput" placeholder="Search memories, skills, APIs..." onkeyup="performSearch()">
+                    <input type="text" class="search-input" id="searchInput" placeholder="搜索记忆、技能、API..." onkeyup="performSearch()">
                     <span class="search-stats" id="searchStats"></span>
                 </div>
             </div>
