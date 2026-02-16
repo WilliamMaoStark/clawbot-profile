@@ -1170,7 +1170,7 @@
     <div class="bg-grid"></div>
 
     <div class="update-banner">
-        <span>最后更新: 2026/02/16 10:33</span>
+        <span>最后更新: 2026/02/16 10:57</span>
         <div style="display: flex; align-items: center; gap: 0.75rem;">
             <span id="pendingChanges" style="color: var(--text-tertiary); font-size: 0.7rem; display: none;"></span>
             <button id="syncBtn" class="sync-btn" onclick="syncChanges()" disabled>
@@ -1267,7 +1267,7 @@
             <div class="sidebar-footer">
                 <div class="status-indicator">
                     <div class="status-dot"></div>
-                    <span>System Normal</span>
+                    <span>系统正常</span>
                 </div>
             </div>
         </aside>
@@ -1469,19 +1469,19 @@
         <!-- Overview -->
         <div class="page active" id="page-overview">
             <div class="page-header">
-                <h1 class="page-title">Overview</h1>
-                <p class="page-subtitle">ClawBot Personal Profile Dashboard</p>
+                <h1 class="page-title">概览</h1>
+                <p class="page-subtitle">ClawBot 个人资料仪表板</p>
             </div>
             
             <div class="glass-card">
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-value">13</div>
-                        <div class="stat-label">P0 Core Rules</div>
+                        <div class="stat-label">P0 核心规则</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-value">11</div>
-                        <div class="stat-label">P1 Projects</div>
+                        <div class="stat-label">P1 活跃项目</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-value">3</div>
@@ -3197,7 +3197,7 @@
         // Copy to clipboard
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
-                showToast('Copied to clipboard');
+                showToast('已复制到剪贴板');
             });
         }
 

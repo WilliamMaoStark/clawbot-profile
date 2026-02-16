@@ -1696,19 +1696,19 @@ function generatePages(data) {
         <!-- Overview -->
         <div class="page active" id="page-overview">
             <div class="page-header">
-                <h1 class="page-title">Overview</h1>
-                <p class="page-subtitle">ClawBot Personal Profile Dashboard</p>
+                <h1 class="page-title">概览</h1>
+                <p class="page-subtitle">ClawBot 个人资料仪表板</p>
             </div>
             
             <div class="glass-card">
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-value">${data.memories.P0.length}</div>
-                        <div class="stat-label">P0 Core Rules</div>
+                        <div class="stat-label">P0 核心规则</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-value">${data.memories.P1.length}</div>
-                        <div class="stat-label">P1 Projects</div>
+                        <div class="stat-label">P1 活跃项目</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-value">${data.memories.P2.length}</div>
@@ -1858,7 +1858,7 @@ function generateHTML(data) {
             <div class="sidebar-footer">
                 <div class="status-indicator">
                     <div class="status-dot"></div>
-                    <span>System Normal</span>
+                    <span>系统正常</span>
                 </div>
             </div>
         </aside>
@@ -2214,7 +2214,7 @@ function generateHTML(data) {
         // Copy to clipboard
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
-                showToast('Copied to clipboard');
+                showToast('已复制到剪贴板');
             });
         }
 
