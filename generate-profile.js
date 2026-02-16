@@ -1386,13 +1386,180 @@ function generatePages(data) {
         <div class="page" id="page-dashboard">
             <div class="page-header">
                 <h1 class="page-title">Dashboard</h1>
-                <p class="page-subtitle">System status and activity monitoring</p>
+                <p class="page-subtitle">Live system monitoring &amp; activity stream</p>
             </div>
+            
+            <div class="dashboard-grid" style="grid-template-columns: repeat(4, 1fr);">
+                <div class="dashboard-card" style="text-align: center;">
+                    <div style="font-size: 0.75rem; color: var(--text-tertiary); margin-bottom: 0.5rem;">Uptime</div>
+                    <div style="font-size: 1.75rem; font-weight: 600; color: var(--accent-cyan);">7d 12h</div>
+                    <div style="font-size: 0.7rem; color: var(--p2-color); margin-top: 0.25rem;">● Stable</div>
+                </div>
+                <div class="dashboard-card" style="text-align: center;">
+                    <div style="font-size: 0.75rem; color: var(--text-tertiary); margin-bottom: 0.5rem;">Tasks Today</div>
+                    <div style="font-size: 1.75rem; font-weight: 600; color: var(--accent-cyan);">12</div>
+                    <div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.25rem;">8 completed</div>
+                </div>
+                <div class="dashboard-card" style="text-align: center;">
+                    <div style="font-size: 0.75rem; color: var(--text-tertiary); margin-bottom: 0.5rem;">Messages</div>
+                    <div style="font-size: 1.75rem; font-weight: 600; color: var(--accent-cyan);">47</div>
+                    <div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.25rem;">24h period</div>
+                </div>
+                <div class="dashboard-card" style="text-align: center;">
+                    <div style="font-size: 0.75rem; color: var(--text-tertiary); margin-bottom: 0.5rem;">Success Rate</div>
+                    <div style="font-size: 1.75rem; font-weight: 600; color: var(--accent-cyan);">96%</div>
+                    <div style="font-size: 0.7rem; color: var(--p2-color); margin-top: 0.25rem;">↑ 2% vs yesterday</div>
+                </div>
+            </div>
+
             <div class="dashboard-grid">
                 <div class="dashboard-card">
                     <div class="dashboard-card-header">
-                        <div class="dashboard-card-icon">'${ICONS.cpu}'</div>
-                        <span class="dashboard-card-title">System Status</span>
+                        <div class="dashboard-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+                        <span class="dashboard-card-title">Active Tasks</span>
+                        <span style="margin-left: auto; font-size: 0.7rem; color: var(--text-tertiary);">Auto-refresh</span>
+                    </div>
+                    <div class="dashboard-list">
+                        <div class="dashboard-list-item">
+                            <span class="dashboard-list-item-icon online"></span>
+                            <div class="dashboard-list-item-content">
+                                <div class="dashboard-list-item-title">Daily OpenClaw Cases</div>
+                                <div class="dashboard-list-item-meta">Cron • Next: 09:00 CST</div>
+                            </div>
+                            <span style="font-size: 0.65rem; color: var(--p2-color); background: rgba(112, 160, 128, 0.15); padding: 2px 6px; border-radius: 9999px;">Scheduled</span>
+                        </div>
+                        <div class="dashboard-list-item">
+                            <span class="dashboard-list-item-icon online"></span>
+                            <div class="dashboard-list-item-content">
+                                <div class="dashboard-list-item-title">Profile Auto-sync</div>
+                                <div class="dashboard-list-item-meta">Cron • Next: 04:00 CST</div>
+                            </div>
+                            <span style="font-size: 0.65rem; color: var(--p2-color); background: rgba(112, 160, 128, 0.15); padding: 2px 6px; border-radius: 9999px;">Scheduled</span>
+                        </div>
+                        <div class="dashboard-list-item">
+                            <span class="dashboard-list-item-icon online"></span>
+                            <div class="dashboard-list-item-content">
+                                <div class="dashboard-list-item-title">Memory Janitor</div>
+                                <div class="dashboard-list-item-meta">Daemon • Last run: 04:00</div>
+                            </div>
+                            <span style="font-size: 0.65rem; color: var(--p2-color); background: rgba(112, 160, 128, 0.15); padding: 2px 6px; border-radius: 9999px;">Active</span>
+                        </div>
+                        <div class="dashboard-list-item">
+                            <span class="dashboard-list-item-icon pending"></span>
+                            <div class="dashboard-list-item-content">
+                                <div class="dashboard-list-item-title">Feishu Integration</div>
+                                <div class="dashboard-list-item-meta">WebSocket • Connected</div>
+                            </div>
+                            <span style="font-size: 0.65rem; color: var(--p1-color); background: rgba(176, 160, 112, 0.15); padding: 2px 6px; border-radius: 9999px;">Standby</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <div class="dashboard-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+                        <span class="dashboard-card-title">Performance</span>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem;">
+                            <span style="color: var(--text-secondary);">Response Time</span>
+                            <span style="color: var(--accent-cyan);">245ms avg</span>
+                        </div>
+                        <div class="dashboard-chart-bar">
+                            <div class="dashboard-chart-bar-fill" style="width: 35%"></div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem;">
+                            <span style="color: var(--text-secondary);">Token Usage</span>
+                            <span style="color: var(--accent-cyan);">2.1M / 10M</span>
+                        </div>
+                        <div class="dashboard-chart-bar">
+                            <div class="dashboard-chart-bar-fill" style="width: 21%"></div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem;">
+                            <span style="color: var(--text-secondary);">Memory Usage</span>
+                            <span style="color: var(--accent-cyan);">127 MB</span>
+                        </div>
+                        <div class="dashboard-chart-bar">
+                            <div class="dashboard-chart-bar-fill" style="width: 15%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem;">
+                            <span style="color: var(--text-secondary);">API Quota</span>
+                            <span style="color: var(--accent-cyan);">85%</span>
+                        </div>
+                        <div class="dashboard-chart-bar">
+                            <div class="dashboard-chart-bar-fill" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card" style="grid-column: span 2;">
+                    <div class="dashboard-card-header">
+                        <div class="dashboard-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+                        <span class="dashboard-card-title">Live Activity Stream</span>
+                        <span style="margin-left: auto; font-size: 0.7rem; color: var(--text-tertiary);">Real-time</span>
+                    </div>
+                    <div class="dashboard-activity">
+                        <div class="dashboard-activity-item">
+                            <div class="dashboard-activity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+                            <div class="dashboard-activity-content">
+                                <div class="dashboard-activity-title">Daily OpenClaw cases task completed</div>
+                                <div class="dashboard-activity-time">09:00 CST • 5 instances found</div>
+                            </div>
+                            <span style="font-size: 0.65rem; color: var(--p2-color);">Success</span>
+                        </div>
+                        <div class="dashboard-activity-item">
+                            <div class="dashboard-activity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+                            <div class="dashboard-activity-content">
+                                <div class="dashboard-activity-title">Dashboard feature deployed</div>
+                                <div class="dashboard-activity-time">09:57 CST • GitHub Pages</div>
+                            </div>
+                            <span style="font-size: 0.65rem; color: var(--p2-color);">Deployed</span>
+                        </div>
+                        <div class="dashboard-activity-item">
+                            <div class="dashboard-activity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+                            <div class="dashboard-activity-content">
+                                <div class="dashboard-activity-title">Feishu writer skill v3.0 completed</div>
+                                <div class="dashboard-activity-time">04:05 CST • Line-by-line write fix</div>
+                            </div>
+                            <span style="font-size: 0.65rem; color: var(--p2-color);">Completed</span>
+                        </div>
+                        <div class="dashboard-activity-item">
+                            <div class="dashboard-activity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+                            <div class="dashboard-activity-content">
+                                <div class="dashboard-activity-title">Memory auto-archived by janitor</div>
+                                <div class="dashboard-activity-time">04:00 CST • 3 P2 items archived</div>
+                            </div>
+                            <span style="font-size: 0.65rem; color: var(--text-tertiary);">System</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card" style="grid-column: span 2;">
+                    <div class="dashboard-card-header">
+                        <div class="dashboard-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+                        <span class="dashboard-card-title">Skill Usage (7 Days)</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 1rem;">
+                        <div style="aspect-ratio: 1; border-radius: 3px; background: var(--accent-cyan);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.6);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.3);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(130, 150, 170, 0.1);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: var(--accent-cyan);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.3);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(130, 150, 170, 0.1);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.6);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.6);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.3);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: var(--accent-cyan);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.6);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.3);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(130, 150, 170, 0.1);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: var(--accent-cyan);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.6);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.3);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(130, 150, 170, 0.1);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: var(--accent-cyan);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.6);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.3);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(130, 150, 170, 0.1);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.6);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: var(--accent-cyan);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.3);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.6);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.6);"></div><div style="aspect-ratio: 1; border-radius: 3px; background: rgba(90, 154, 142, 0.3);"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem;">
+                        <div style="display: flex; gap: 1rem;">
+                            <span style="color: var(--text-tertiary);">Less</span>
+                            <div style="display: flex; gap: 2px;">
+                                <div style="width: 10px; height: 10px; background: rgba(130, 150, 170, 0.1); border-radius: 2px;"></div>
+                                <div style="width: 10px; height: 10px; background: rgba(90, 154, 142, 0.3); border-radius: 2px;"></div>
+                                <div style="width: 10px; height: 10px; background: rgba(90, 154, 142, 0.6); border-radius: 2px;"></div>
+                                <div style="width: 10px; height: 10px; background: var(--accent-cyan); border-radius: 2px;"></div>
+                            </div>
+                            <span style="color: var(--text-tertiary);">More</span>
+                        </div>
+                        <span style="color: var(--text-secondary);">147 invocations this week</span>
                     </div>
                 </div>
             </div>
